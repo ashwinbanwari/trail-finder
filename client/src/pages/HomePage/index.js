@@ -282,6 +282,9 @@ const score = (report_count, rating_count,distance) => {
                     <Typography style={{ display: 'inline' }}>
                       {trail.TITLE}
                     </Typography>
+                    <Typography  style={{ display: 'inline' }}>
+                      Score: {Math.round(score(trail.REPORT_COUNT,trail.RATING_COUNT, trail.DISTANCE))}
+                    </Typography>
                     {coords.latitude !== 0 ? (
                       <Typography>
                         Distance:{' '}
