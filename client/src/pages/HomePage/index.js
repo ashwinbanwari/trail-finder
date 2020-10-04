@@ -179,9 +179,9 @@ const score = (report_count, rating_count,length) => {
           >
             <Typography className={classes.heading}>Filters</Typography>
           </AccordionSummary>
-        <Typography id="range-slider" gutterBottom>Length</Typography>
+        <Typography id="range-slider" >Length</Typography>
           <div style={{"display":"flex"}}>
-          <Typography style={{"width":"5ch","margin":"0 0.5em"}}>{lengthRange[0]}</Typography>
+          <Typography style={{"width":"6ch","margin":"0 0.5em"}}>{lengthRange[0]}</Typography>
           <Slider
             style={{"width": "70%",'flex':'1 1 auto'}}
             max={1300}
@@ -190,11 +190,11 @@ const score = (report_count, rating_count,length) => {
             valueLabelDisplay="auto"
             aria-labelledby="range-slider"
             />
-          <Typography style={{"width":"5ch","margin":"0 0.5em"}}>{lengthRange[1]}</Typography>
+          <Typography style={{"width":"6ch","margin":"0 0.5em"}}>{lengthRange[1]}</Typography>
 </div>
         <Typography>Gain</Typography>
         <div style={{"display":"flex"}}>
-          <Typography style={{"width":"5ch","margin":"0 0.5em"}}>{gainRange[0]}</Typography>
+          <Typography style={{"width":"6ch","margin":"0 0.5em"}}>{gainRange[0]}</Typography>
           <Slider
             style={{"width": "70%",'flex':'1 1 auto'}}
             max={28000}
@@ -203,12 +203,12 @@ const score = (report_count, rating_count,length) => {
             valueLabelDisplay="auto"
             aria-labelledby="range-slider"
             />
-          <Typography style={{"width":"5ch","margin":"0 0.5em"}}>{gainRange[1]}</Typography>
+          <Typography style={{"width":"6ch","margin":"0 0.5em"}}>{gainRange[1]}</Typography>
           </div>
 
         <Typography>Highest Altitude</Typography>
         <div style={{"display":"flex"}}>
-          <Typography style={{"width":"5ch","margin":"0 0.5em"}}>{altitudeRange[0]}</Typography>
+          <Typography style={{"width":"6ch","margin":"0 0.5em"}}>{altitudeRange[0]}</Typography>
           <Slider
             style={{"width": "70%",'flex':'1 1 auto'}}
             value={altitudeRange}
@@ -217,11 +217,11 @@ const score = (report_count, rating_count,length) => {
             valueLabelDisplay="auto"
             aria-labelledby="range-slider"
             />
-          <Typography style={{"width":"5ch","margin":"0 0.5em"}}>{altitudeRange[1]}</Typography>
+          <Typography style={{"width":"6ch","margin":"0 0.5em"}}>{altitudeRange[1]}</Typography>
         </div>
         <Typography>Report Count</Typography>
         <div style={{"display":"flex"}}>
-          <Typography style={{"width":"5ch","margin":"0 0.5em"}}>{reportRange[0]}</Typography>
+          <Typography style={{"width":"6ch","margin":"0 0.5em"}}>{reportRange[0]}</Typography>
           <Slider
             style={{"width": "70%",'flex':'1 1 auto'}}
             max={2000}
@@ -230,11 +230,11 @@ const score = (report_count, rating_count,length) => {
             valueLabelDisplay="auto"
             aria-labelledby="range-slider"
             />
-          <Typography style={{"width":"5ch","margin":"0 0.5em"}}>{reportRange[1]}</Typography>
+          <Typography style={{"width":"6ch","margin":"0 0.5em"}}>{reportRange[1]}</Typography>
         </div>
-          <Typography id="range-slider" gutterBottom>Rating</Typography>
+          <Typography id="range-slider" >Rating</Typography>
           <div style={{"display":"flex"}}>
-            <Typography style={{"width":"5ch","margin":"0 0.5em"}}>{scoreRange[0]}</Typography>
+            <Typography style={{"width":"6ch","margin":"0 0.5em"}}>{scoreRange[0]}</Typography>
           <Slider
             style={{"width": "70%",'flex':'1 1 auto'}}
             max={200}
@@ -243,7 +243,7 @@ const score = (report_count, rating_count,length) => {
             valueLabelDisplay="auto"s
             aria-labelledby="range-slider"
             />
-          <Typography style={{"width":"5ch","margin":"0 0.5em"}}>{scoreRange[1]}</Typography>
+          <Typography style={{"width":"6ch","margin":"0 0.5em"}}>{scoreRange[1]}</Typography>
         </div>
           </Accordion>
       </div>
