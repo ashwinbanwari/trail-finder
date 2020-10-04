@@ -5,7 +5,31 @@ class GoogleMap extends Component {
     constructor(props) {
         super(props);
     }
+    min = (a, b) => {
+        if (a < b) {
+            return a;
+        } else {
+            return b;
+        }
+    }
+    score = (report_count, rating_count, length) => {
+        let ans =  Math.abs(report_count + rating_count - 25) / 1 / (length + 0.0001);
+        return this.min(6 * ans, 100);
+    };
 
+    perc2color(perc) {
+        var r, g, b = 0;
+        if(perc < 50) {
+            r = 255;
+            g = Math.round(5.1 * perc);
+        }
+        else {
+            g = 255;
+            r = Math.round(510 - 5.10 * perc);
+        }
+        var h = r * 0x10000 + g * 0x100 + b * 0x1;
+        return '#' + ('000000' + h.toString(16)).slice(-6);
+    }
     
 
     render() {
@@ -47,16 +71,17 @@ class GoogleMap extends Component {
                     >
                     {
                     this.props.trails.map((item) =>
+                    
                         <Circle
                         center={{lat: item.LATITUDE, lng: item.LONGITUDE}}
                         radius={4000}
-                        strokeColor= "#FF0000"
                         strokeOpacity= {0.5}
                         strokeWeight= {5}
-                        fillColor= "#FF0000"
+                        fillColor= {this.perc2color(this.score(item.REPORT_COUNT, item.RATING_COUNT, item.DISTANCE))}
                         fillOpacity= {2}
                         strokeColor='transparent'
                         />
+                        
                     )}
                     </Map>
                 </div>
