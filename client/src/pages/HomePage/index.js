@@ -419,7 +419,7 @@ const HomePage = ({ classes }) => {
                         <div />
                       )}
                       <Button
-                        style={{ display: 'inline' }}
+                        style={{ display: 'inline', color: '#99ff99' }}
                         onClick={() => {
                           setDialogTrail(trail);
                           setDialogOpen(true);
