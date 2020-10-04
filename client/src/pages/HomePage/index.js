@@ -156,7 +156,7 @@ const HomePage = ({ classes }) => {
 
 
 const score = (report_count, rating_count,length) => {
-  return ((report_count + rating_count - 25) / (1)) / (length + 0.0001);
+  return (Math.abs(report_count + rating_count - 25) / (1)) / (length + 0.0001);
 }
 
 
@@ -240,7 +240,7 @@ const score = (report_count, rating_count,length) => {
             max={200}
             value={scoreRange}
             onChange={updateScore}
-            valueLabelDisplay="auto"s
+            valueLabelDisplay="auto"
             aria-labelledby="range-slider"
             />
           <Typography style={{"width":"6ch","margin":"0 0.5em"}}>{scoreRange[1]}</Typography>
