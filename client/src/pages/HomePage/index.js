@@ -19,6 +19,7 @@ import { withRouter } from 'react-router-dom';
 import Data from '../../utils/data';
 import Papa from 'papaparse';
 import OrderDialog from '../../components/OrderDialog';
+import GoogleMap from './Map';
 
 const styles = () => {
   return {
@@ -103,6 +104,7 @@ const HomePage = ({ classes }) => {
   return (
     <div className={classes.page}>
       <div style={{ marginBottom: '3em' }}>
+        <GoogleMap/>
         <Typography variant="h2">Trailess</Typography>
         <Typography variant="h5">
           <i>Find less-used trails</i>
