@@ -14,7 +14,7 @@ class GoogleMap extends Component {
     }
     score = (report_count, rating_count, length) => {
         let ans =  Math.abs(report_count + rating_count - 25) / 1 / (length + 0.0001);
-        return this.min(6 * ans, 100);
+        return 100 - this.min(6 * ans, 100);
     };
 
     perc2color(perc) {
