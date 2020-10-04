@@ -9,11 +9,14 @@ import {
   FormControl,
   // Input,
   // InputLabel,
-  TextField,
+  // TextField,
   Card,
   Slider,
   Grid,
+  Accordion,
+  AccordionSummary,
 } from '@material-ui/core';
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import SearchBar from 'material-ui-search-bar';
 import { withRouter } from 'react-router-dom';
 import Data from '../../utils/data';
@@ -26,17 +29,16 @@ const styles = (theme) => {
     page: {
       textAlign: 'center',
     },
-    bodyContainer:{
+    bodyContainer: {
       display: 'flex',
       padding: '1em',
-      [theme.breakpoints.down('lg')]: {flexDirection:'column'},
-      [theme.breakpoints.up('lg')]: {flexDirection:'row'}
+      [theme.breakpoints.down('lg')]: { flexDirection: 'column' },
+      [theme.breakpoints.up('lg')]: { flexDirection: 'row' },
     },
-    filters:{
-      margin: '0 auto',
+    filters: {
       padding: '1em',
-      [theme.breakpoints.down('lg')]: {width:'50vw'},
-      [theme.breakpoints.up('lg')]: {width:'15vw'}
+      [theme.breakpoints.down('lg')]: { width: '75vw', margin: 'auto' },
+      [theme.breakpoints.up('lg')]: { width: '20vw', margin: '1em' },
     },
   };
 };
@@ -66,10 +68,11 @@ const HomePage = ({ classes }) => {
   const [coords, setCoords] = useState({ latitude: 0, longitude: 0 });
   const [searchText, setSearchText] = useState('');
   const [showLimit, setShowLimit] = useState(100);
-  const [distanceRange, setDistanceRange] = useState([0,1300]);
-  const [gainRange, setGainRange] = useState([0,28000]);
-  const [altitudeRange, setAltitudeRange] = useState([0,13000]);
-  const [reportRange, setReportRange] = useState([0,2000]);
+  const [lengthRange, setLengthRange] = useState([0, 1300]);
+  const [gainRange, setGainRange] = useState([0, 28000]);
+  const [altitudeRange, setAltitudeRange] = useState([0, 13000]);
+  const [reportRange, setReportRange] = useState([0, 2000]);
+  const [scoreRange, setScoreRange] = useState([0, 2000]);
   const getLocation = () => {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(locationSuccess);
@@ -81,30 +84,30 @@ const HomePage = ({ classes }) => {
     //console.log(coords);
   };
 
-
-  const updateDistance = (event,newValue) =>
-  {
-    setDistanceRange(newValue);
+  const updateLength = (event, newValue) => {
+    setLengthRange(newValue);
     //console.log(newValue);
-  }
+  };
 
-  const updateGain = (event,newValue) =>
-  {
+  const updateGain = (event, newValue) => {
     setGainRange(newValue);
     //console.log(newValue);
-  }
+  };
 
-  const updateAltitude = (event,newValue) =>
-  {
+  const updateAltitude = (event, newValue) => {
     setAltitudeRange(newValue);
     //console.log(newValue);
-  }
+  };
 
-  const updateReport = (event,newValue) =>
-  {
+  const updateReport = (event, newValue) => {
     setReportRange(newValue);
     //console.log(newValue);
-  }
+  };
+
+  const updateScore = (event, newValue) => {
+    setScoreRange(newValue);
+    //console.log(newValue);
+  };
 
   // Trail:  {DISTANCE, DIST_TYPE, GAIN, HIGHEST, LATITUDE, LONGITUDE, RATING, RATING_COUNT, REGION, REPORT_COUNT, REPORT_DATE, TITLE, URL}
   let [trails, setTrails] = useState([]);
@@ -140,9 +143,14 @@ const HomePage = ({ classes }) => {
       arr.push(curr);
     }
     setTrails(arr);
+    console.log('API REQUEST');
   }, []);
-  console.log(trails[0]);
 
+
+
+const score = (report_count, rating_count,length) => {
+  return (Math.abs(report_count + rating_count - 25) / (1)) / (length + 0.0001);
+}
 
 
   return (
@@ -150,163 +158,275 @@ const HomePage = ({ classes }) => {
       <div style={{ marginBottom: '3em' }}>
         <Typography variant="h2">Trailess</Typography>
         <Typography variant="h5">
-          <i>Find less-used trails</i>
+          <i>Find the trail less traveled by</i>
         </Typography>
       </div>
       <div className={classes.bodyContainer}>
-      <div className={classes.filters}>
-        <Typography id="range-slider" gutterBottom>Distance</Typography>
-          <Slider
-            max={1300}
-            value={distanceRange}
-            onChange={updateDistance}
-            valueLabelDisplay="auto"
-            aria-labelledby="range-slider"
+        <div className="main" style={{ margin: 'auto' }}>
+          <div
+            style={{ maxWidth: 1250, marginLeft: 'auto', marginRight: 'auto' }}
+          >
+            <SearchBar
+              placeholder="Search By Trail Name"
+              value={searchText}
+              onChange={(val) => setSearchText(val)}
             />
+            <Grid container spacing={6}>
+              <Grid item xs={12} sm={6}>
+                <Accordion style={{ marginTop: '1em' }}>
+                  <AccordionSummary
+                    expandIcon={<ExpandMoreIcon />}
+                    aria-controls="panel1a-content"
+                    id="panel1a-header"
+                  >
+                    <Typography className={classes.heading}>Filters</Typography>
+                  </AccordionSummary>
+                  <Typography id="range-slider" gutterBottom>
+                    Length
+                  </Typography>
+                  <div style={{ display: 'flex' }}>
+                    <Typography style={{ width: '5ch', margin: 'auto 0.5em' }}>
+                      {lengthRange[0]}
+                    </Typography>
+                    <Slider
+                      style={{ width: '70%', flex: '1 1 auto' }}
+                      max={1300}
+                      value={lengthRange}
+                      onChange={updateLength}
+                      valueLabelDisplay="auto"
+                      aria-labelledby="range-slider"
+                    />
+                    <Typography style={{ width: '5ch', margin: 'auto 0.5em' }}>
+                      {lengthRange[1]}
+                    </Typography>
+                  </div>
+                  <Typography>Gain</Typography>
+                  <div style={{ display: 'flex' }}>
+                    <Typography style={{ width: '5ch', margin: 'auto 0.5em' }}>
+                      {gainRange[0]}
+                    </Typography>
+                    <Slider
+                      style={{ width: '70%', flex: '1 1 auto' }}
+                      max={28000}
+                      value={gainRange}
+                      onChange={updateGain}
+                      valueLabelDisplay="auto"
+                      aria-labelledby="range-slider"
+                    />
+                    <Typography style={{ width: '5ch', margin: 'auto 0.5em' }}>
+                      {gainRange[1]}
+                    </Typography>
+                  </div>
 
-        <Typography>Gain</Typography>
-          <Slider
-            max={28000}
-            value={gainRange}
-            onChange={updateGain}
-            valueLabelDisplay="auto"
-            aria-labelledby="range-slider"
-            />
-        <Typography>Highest Altitude</Typography>
-          <Slider
-            value={altitudeRange}
-            onChange={updateAltitude}
-            max={13000}
-            valueLabelDisplay="auto"
-            aria-labelledby="range-slider"
-            />
-        <Typography>Report Count</Typography>
-          <Slider
-            max={2000}
-            value={reportRange}
-            onChange={updateReport}
-            valueLabelDisplay="auto"
-            aria-labelledby="range-slider"
-            />
-      </div>
-      <div className="main">
-        <form style={{ maxWidth: '40vw', margin: 'auto' }}>
-          <SearchBar
-            placeholder="Search By Trail Name"
-            value={searchText}
-            onChange={(val) => setSearchText(val)}
+                  <Typography>Highest Altitude</Typography>
+                  <div style={{ display: 'flex' }}>
+                    <Typography style={{ width: '5ch', margin: 'auto 0.5em' }}>
+                      {altitudeRange[0]}
+                    </Typography>
+                    <Slider
+                      style={{ width: '70%', flex: '1 1 auto' }}
+                      value={altitudeRange}
+                      onChange={updateAltitude}
+                      max={13000}
+                      valueLabelDisplay="auto"
+                      aria-labelledby="range-slider"
+                    />
+                    <Typography style={{ width: '5ch', margin: 'auto 0.5em' }}>
+                      {altitudeRange[1]}
+                    </Typography>
+                  </div>
+                  <Typography>Report Count</Typography>
+                  <div style={{ display: 'flex' }}>
+                    <Typography style={{ width: '5ch', margin: 'auto 0.5em' }}>
+                      {reportRange[0]}
+                    </Typography>
+                    <Slider
+                      style={{ width: '70%', flex: '1 1 auto' }}
+                      max={2000}
+                      value={reportRange}
+                      onChange={updateReport}
+                      valueLabelDisplay="auto"
+                      aria-labelledby="range-slider"
+                    />
+                    <Typography style={{ width: '5ch', margin: 'auto 0.5em' }}>
+                      {reportRange[1]}
+                    </Typography>
+                  </div>
+                  <Typography id="range-slider" gutterBottom>
+                    Rating
+                  </Typography>
+                  <div style={{ display: 'flex' }}>
+                    <Typography style={{ width: '5ch', margin: 'auto 0.5em' }}>
+                      {scoreRange[0]}
+                    </Typography>
+                    <Slider
+                      style={{ width: '70%', flex: '1 1 auto' }}
+                      max={200}
+                      value={scoreRange}
+                      onChange={updateScore}
+                      valueLabelDisplay="auto"
+                      s
+                      aria-labelledby="range-slider"
+                    />
+                    <Typography style={{ width: '5ch', margin: 'auto 0.5em' }}>
+                      {scoreRange[1]}
+                    </Typography>
+                  </div>
+                </Accordion>
+              </Grid>
+              <Grid item xs={12} sm={6}>
+                <FormGroup style={{ marginTop: '1em' }}>
+                  <FormControl>
+                    <Button
+                      variant="contained"
+                      style={{ height: 47, color: 'white' }}
+                      color="primary"
+                      onClick={getLocation}
+                    >
+                      Find Trails Near Me
+                    </Button>
+                  </FormControl>
+                </FormGroup>
+              </Grid>
+            </Grid>
+          </div>
+          <CssBaseline />
+          <OrderDialog
+            open={dialogOpen}
+            handleClose={() => setDialogOpen(false)}
+            trail={dialogTrail}
           />
-          <FormGroup style={{ margin: 'auto' }}>
-            <FormControl>
-              <TextField />
-              <Button variant="contained" color="primary" onClick={getLocation}>
-                Find Trails Near Me
-              </Button>
-            </FormControl>
-          </FormGroup>
-        </form>
-        <CssBaseline />
-        <OrderDialog
-          open={dialogOpen}
-          handleClose={() => setDialogOpen(false)}
-          trail={dialogTrail}
-        />
-        <div
-          style={{
-            display: 'flex',
-            flexDirection: 'column',
-            marginTop: '4em',
-            maxWidth: 1300,
-            marginLeft: 'auto',
-            marginRight: 'auto',
-          }}
-        >
-          <Grid container spacing={8}>
-            {trails
-              .sort(
-                (a, b) =>
-                  (a.LATITUDE - coords.latitude) ** 2 +
-                  (a.LONGITUDE - coords.longitude) ** 2 -
-                  ((a.LATITUDE - coords.latitude) ** 2 +
-                    (b.LONGITUDE - coords.longitude) ** 2)
-              )
-              .filter((trail, i) => {
-                let shouldKeep = true;
-                if (searchText !== '') {
+          <div
+            style={{
+              display: 'flex',
+              flexDirection: 'column',
+              marginTop: '4em',
+              maxWidth: 1300,
+              marginLeft: 'auto',
+              marginRight: 'auto',
+            }}
+          >
+            <Grid container spacing={8}>
+              {trails
+                .sort(
+                  (a, b) =>
+                    (a.LATITUDE - coords.latitude) ** 2 +
+                    (a.LONGITUDE - coords.longitude) ** 2 -
+                    ((a.LATITUDE - coords.latitude) ** 2 +
+                      (b.LONGITUDE - coords.longitude) ** 2)
+                )
+                .filter((trail, i) => {
+                  let shouldKeep = true;
+                  if (searchText !== '') {
+                    shouldKeep =
+                      shouldKeep &&
+                      trail.TITLE.includes(searchText.toLowerCase());
+                  }
+                  shouldKeep = shouldKeep && i < showLimit;
+                  let trailScore = score(
+                    trail.REPORT_COUNT,
+                    trail.RATING_COUNT,
+                    trail.DISTANCE
+                  );
+                  if (!shouldKeep || trailScore > 2000) {
+                    return false;
+                  }
+                  /* Silder Filters*/
                   shouldKeep =
                     shouldKeep &&
-                    trail.TITLE.includes(searchText.toLowerCase());
-                }
-                shouldKeep = shouldKeep && i < showLimit;
-                /* Silder Filters*/
-                shouldKeep = shouldKeep && (trail.DISTANCE >= distanceRange[0] && trail.DISTANCE <= distanceRange[1]);
-                shouldKeep = shouldKeep && (trail.GAIN >= gainRange[0] && trail.GAIN <= gainRange[1]);
-                shouldKeep = shouldKeep && (trail.HIGHEST >= altitudeRange[0] && trail.HIGHEST <= altitudeRange[1]);
-                shouldKeep = shouldKeep && (trail.REPORT_COUNT >= reportRange[0] && trail.REPORT_COUNT <= reportRange[1]);
-                return shouldKeep;
-              })
-              .map((trail) => (
-                <Grid item xs={12} sm={6} md={4}>
-                  <Card
-                    style={{
-                      margin: '0 auto',
-                      display: 'flex',
-                      flexDirection: 'column',
-                      paddingTop: 22,
-                      height: 125,
-                      width: '40ch',
-                    }}
-                  >
-                    <Typography style={{ display: 'inline' }}>
-                      {trail.TITLE}
-                    </Typography>
-                    {coords.latitude !== 0 ? (
-                      <Typography>
-                        Distance:{' '}
-                        {distance(
-                          trail.LATITUDE,
-                          trail.LONGITUDE,
-                          coords.latitude,
-                          coords.longitude
-                        ).toFixed(2)}{' '}
-                        Miles
-                      </Typography>
-                    ) : (
-                      <div />
-                    )}
-                    <Button
-                      style={{ display: 'inline' }}
-                      onClick={() => {
-                        setDialogTrail(trail);
-                        setDialogOpen(true);
+                    trail.DISTANCE >= lengthRange[0] &&
+                    trail.DISTANCE <= lengthRange[1];
+                  shouldKeep =
+                    shouldKeep &&
+                    trail.GAIN >= gainRange[0] &&
+                    trail.GAIN <= gainRange[1];
+                  shouldKeep =
+                    shouldKeep &&
+                    trail.HIGHEST >= altitudeRange[0] &&
+                    trail.HIGHEST <= altitudeRange[1];
+                  shouldKeep =
+                    shouldKeep &&
+                    trail.REPORT_COUNT + trail.RATING_COUNT >= reportRange[0] &&
+                    trail.REPORT_COUNT + trail.RATING_COUNT <= reportRange[1];
+
+                  shouldKeep =
+                    shouldKeep &&
+                    trailScore >= scoreRange[0] &&
+                    trailScore <= scoreRange[1];
+                  return shouldKeep;
+                })
+                .map((trail) => (
+                  <Grid item xs={12} sm={6} md={4}>
+                    <Card
+                      style={{
+                        margin: '0 auto',
+                        display: 'flex',
+                        flexDirection: 'column',
+                        paddingTop: 22,
+                        height: 125,
+                        width: '40ch',
                       }}
                     >
-                      Learn More
-                    </Button>
-                  </Card>
-                </Grid>
-              ))}
-          </Grid>
-          {showLimit < trails?.length ? (
-            <div
-              style={{
-                marginTop: '1.5em',
-                marginBottom: '2em',
-                textAlign: 'center',
-                marginLeft: 'auto',
-                marginRight: 'auto',
-              }}
-            >
-              <Button onClick={() => setShowLimit(showLimit + 200)}>
-                Show More
-              </Button>
-            </div>
-          ) : (
-            <div />
-          )}
+                      <Typography style={{ display: 'inline' }}>
+                        {trail.TITLE}
+                      </Typography>
+                      <Typography style={{ display: 'inline' }}>
+                        Score:{' '}
+                        {Math.round(
+                          score(
+                            trail.REPORT_COUNT,
+                            trail.RATING_COUNT,
+                            trail.DISTANCE
+                          )
+                        )}
+                      </Typography>
+                      {coords.latitude !== 0 ? (
+                        <Typography>
+                          Distance:{' '}
+                          {distance(
+                            trail.LATITUDE,
+                            trail.LONGITUDE,
+                            coords.latitude,
+                            coords.longitude
+                          ).toFixed(2)}{' '}
+                          Miles
+                        </Typography>
+                      ) : (
+                        <div />
+                      )}
+                      <Button
+                        style={{ display: 'inline' }}
+                        onClick={() => {
+                          setDialogTrail(trail);
+                          setDialogOpen(true);
+                        }}
+                      >
+                        Learn More
+                      </Button>
+                    </Card>
+                  </Grid>
+                ))}
+            </Grid>
+            {showLimit < trails?.length ? (
+              <div
+                style={{
+                  marginTop: '1.5em',
+                  marginBottom: '2em',
+                  textAlign: 'center',
+                  marginLeft: 'auto',
+                  marginRight: 'auto',
+                }}
+              >
+                <Button onClick={() => setShowLimit(showLimit + 200)}>
+                  Show More
+                </Button>
+              </div>
+            ) : (
+              <div />
+            )}
+          </div>
         </div>
       </div>
-    </div>
     </div>
   );
 };
