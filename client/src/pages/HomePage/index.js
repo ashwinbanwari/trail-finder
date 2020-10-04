@@ -13,6 +13,7 @@ import {
   Card,
   Slider,
   Grid,
+  Tooltip,
   Accordion,
   AccordionSummary,
 } from '@material-ui/core';
@@ -146,26 +147,40 @@ const HomePage = ({ classes }) => {
     console.log('API REQUEST');
   }, []);
 
-
-
-const score = (report_count, rating_count,length) => {
-  return (Math.abs(report_count + rating_count - 25) / (1)) / (length + 0.0001);
-}
-
+  const score = (report_count, rating_count, length) => {
+    return Math.abs(report_count + rating_count - 25) / 1 / (length + 0.0001);
+  };
 
   return (
     <div className={classes.page}>
       <div style={{ marginBottom: '3em' }}>
-        <GoogleMap trails={trails}/>
-        <Typography variant="h2">Trailess</Typography>
-        <Typography variant="h5">
-          <i>Find the trail less traveled by</i>
-        </Typography>
+        <GoogleMap trails = {trails} />
+        <Card
+          style={{
+            width: 400,
+            marginLeft: 'auto',
+            marginRight: 'auto',
+            padding: '2.5em',
+            color: 'white',
+            background:
+              'linear-gradient(135deg,rgba(2,0,36,1) 0%, rgba(20,228,0,1) 0%, rgba(0,149,55,1) 50%)',
+          }}
+        >
+          <Typography variant="h2">Trailess</Typography>
+          <Typography variant="h5">
+            <i>Find the trail less traveled by</i>
+          </Typography>
+        </Card>
       </div>
       <div className={classes.bodyContainer}>
-        <div className="main" style={{ margin: 'auto' }}>
+        <div className="main" style={{ margin: 'auto', width: '100%' }}>
           <div
-            style={{ maxWidth: 1250, marginLeft: 'auto', marginRight: 'auto' }}
+            style={{
+              maxWidth: 1250,
+              marginLeft: 'auto',
+              marginRight: 'auto',
+              width: '100%',
+            }}
           >
             <SearchBar
               placeholder="Search By Trail Name"
@@ -253,22 +268,26 @@ const score = (report_count, rating_count,length) => {
                       {reportRange[1]}
                     </Typography>
                   </div>
+
                   <Typography id="range-slider" gutterBottom>
-                    Rating
+                    Score
                   </Typography>
+
                   <div style={{ display: 'flex' }}>
                     <Typography style={{ width: '5ch', margin: 'auto 0.5em' }}>
                       {scoreRange[0]}
                     </Typography>
-                    <Slider
-                      style={{ width: '70%', flex: '1 1 auto' }}
-                      max={200}
-                      value={scoreRange}
-                      onChange={updateScore}
-                      valueLabelDisplay="auto"
-                      s
-                      aria-labelledby="range-slider"
-                    />
+                    <Tooltip title="How crowded a trail is (lower is better)">
+                      <Slider
+                        style={{ width: '70%', flex: '1 1 auto' }}
+                        max={200}
+                        value={scoreRange}
+                        onChange={updateScore}
+                        valueLabelDisplay="auto"
+                        s
+                        aria-labelledby="range-slider"
+                      />
+                    </Tooltip>
                     <Typography style={{ width: '5ch', margin: 'auto 0.5em' }}>
                       {scoreRange[1]}
                     </Typography>
@@ -321,7 +340,9 @@ const score = (report_count, rating_count,length) => {
                   if (searchText !== '') {
                     shouldKeep =
                       shouldKeep &&
-                      trail.TITLE.includes(searchText.toLowerCase());
+                      trail.TITLE.toLowerCase().includes(
+                        searchText.toLowerCase()
+                      );
                   }
                   shouldKeep = shouldKeep && i < showLimit;
                   let trailScore = score(
@@ -371,16 +392,18 @@ const score = (report_count, rating_count,length) => {
                       <Typography style={{ display: 'inline' }}>
                         {trail.TITLE}
                       </Typography>
-                      <Typography style={{ display: 'inline' }}>
-                        Score:{' '}
-                        {Math.round(
-                          score(
-                            trail.REPORT_COUNT,
-                            trail.RATING_COUNT,
-                            trail.DISTANCE
-                          )
-                        )}
-                      </Typography>
+                      <Tooltip title="How crowded a trail is (lower is better)">
+                        <Typography style={{ display: 'inline' }}>
+                          Score:{' '}
+                          {Math.round(
+                            score(
+                              trail.REPORT_COUNT,
+                              trail.RATING_COUNT,
+                              trail.DISTANCE
+                            )
+                          )}
+                        </Typography>
+                      </Tooltip>
                       {coords.latitude !== 0 ? (
                         <Typography>
                           Distance:{' '}
@@ -396,7 +419,7 @@ const score = (report_count, rating_count,length) => {
                         <div />
                       )}
                       <Button
-                        style={{ display: 'inline' }}
+                        style={{ display: 'inline', color: '#aedfaf' }}
                         onClick={() => {
                           setDialogTrail(trail);
                           setDialogOpen(true);

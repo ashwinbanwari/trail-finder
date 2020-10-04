@@ -38,108 +38,107 @@ export default (props) => {
   }
 
   return (
-    <div>
-      <Dialog
-        fullScreen={fullScreen}
-        open={props.open}
-        onClose={props.handleClose}
-        aria-labelledby="responsive-dialog-title"
-      >
-        <DialogTitle id="responsive-dialog-title">
-          {props.trail?.TITLE}
-        </DialogTitle>
-        <DialogContent>
-          <div
-            style={{
-              padding: '2em',
-            }}
-          >
-            {weather ? (
-              <div style={{ marginBottom: '2em' }}>
-                <Typography gutterBottom variant="h5">
-                  Weather Forecast
-                </Typography>
-                {weather?.daily
-                  ?.filter((_, i) => i < 5)
-                  .map((day) => (
-                    <Typography>
-                      <b>
-                        {new Date(day.dt * 1000).toLocaleDateString('en-US')}:
-                      </b>{' '}
-                      {day.weather[0].main} ({day.temp.day}
-                      °)
-                    </Typography>
-                  ))}
-              </div>
-            ) : (
-              ''
-            )}
-            {props.trail?.DISTANCE ? (
-              <Typography>
-                <b>Distance:</b> {props.trail?.DISTANCE}
-                {' miles '}
-                {props.trail?.DIST_TYPE
-                  ? '(' + props.trail?.DIST_TYPE + ')'
-                  : ''}
+    <Dialog
+      fullScreen={fullScreen}
+      open={props.open}
+      onClose={props.handleClose}
+      aria-labelledby="responsive-dialog-title"
+      maxWidth={false}
+    >
+      <DialogTitle id="responsive-dialog-title">
+        {props.trail?.TITLE}
+      </DialogTitle>
+      <DialogContent>
+        <div
+          style={{
+            padding: '2em',
+            minWidth: 600,
+          }}
+        >
+          {weather ? (
+            <div style={{ marginBottom: '2em' }}>
+              <Typography gutterBottom variant="h5">
+                Weather Forecast
               </Typography>
-            ) : (
-              <div />
-            )}
-            {props.trail?.GAIN ? (
-              <Typography>
-                <b>Gain:</b> {props.trail?.GAIN}
-                {' feet'}
-              </Typography>
-            ) : (
-              <div />
-            )}
-            {props.trail?.HIGHEST ? (
-              <Typography>
-                <b>Highest Point:</b> {props.trail?.HIGHEST}
-                {' feet'}
-              </Typography>
-            ) : (
-              <div />
-            )}
-            {props.trail?.RATING ? (
-              <Typography>
-                <b>Rating:</b> {props.trail?.RATING}
-                {'/5 from '}
-                {props.trail?.RATING_COUNT} Reviews
-              </Typography>
-            ) : (
-              <div />
-            )}
-            {props.trail?.REGION ? (
-              <Typography>
-                <b>Region:</b> {props.trail?.REGION}
-              </Typography>
-            ) : (
-              <div />
-            )}
-            <GoogleMap lat={lat} lng={lon}/>
-          </div>
-          
-        </DialogContent>
-        <DialogActions>
-          {props.trail?.URL ? (
-            <Button onClick={() => (window.location.href = props.trail?.URL)}>
-              View Details
-            </Button>
+              {weather?.daily
+                ?.filter((_, i) => i < 5)
+                .map((day) => (
+                  <Typography>
+                    <b>
+                      {new Date(day.dt * 1000).toLocaleDateString('en-US')}:
+                    </b>{' '}
+                    {day.weather[0].main} ({day.temp.day}
+                    °)
+                  </Typography>
+                ))}
+            </div>
+          ) : (
+            ''
+          )}
+          {props.trail?.DISTANCE ? (
+            <Typography>
+              <b>Distance:</b> {props.trail?.DISTANCE}
+              {' miles '}
+              {props.trail?.DIST_TYPE ? '(' + props.trail?.DIST_TYPE + ')' : ''}
+            </Typography>
           ) : (
             <div />
           )}
-          <Button
-            onClick={() => {
-              setWeather(null);
-              props.handleClose();
-            }}
-            autoFocus
-          >
-            Close
+          {props.trail?.GAIN ? (
+            <Typography>
+              <b>Gain:</b> {props.trail?.GAIN}
+              {' feet'}
+            </Typography>
+          ) : (
+            <div />
+          )}
+          {props.trail?.HIGHEST ? (
+            <Typography>
+              <b>Highest Point:</b> {props.trail?.HIGHEST}
+              {' feet'}
+            </Typography>
+          ) : (
+            <div />
+          )}
+          {props.trail?.RATING ? (
+            <Typography>
+              <b>Rating:</b> {props.trail?.RATING}
+              {'/5 from '}
+              {props.trail?.RATING_COUNT} Reviews
+            </Typography>
+          ) : (
+            <div />
+          )}
+          {props.trail?.REGION ? (
+            <Typography>
+              <b>Region:</b> {props.trail?.REGION}
+            </Typography>
+          ) : (
+            <div />
+          )}
+          <div style={{ marginTop: '1em' }}>
+            <GoogleMap lat={lat} lng={lon} />
+          </div>
+        </div>
+      </DialogContent>
+      <DialogActions>
+        {props.trail?.URL ? (
+          <Button onClick={() => (window.location.href = props.trail?.URL)}>
+            View Details
           </Button>
-        </DialogActions>
-      </Dialog>
-    </div>
+        ) : (
+          <div />
+        )}
+        <Button
+          onClick={() => {
+            setWeather(null);
+            props.handleClose();
+          }}
+          autoFocus
+        >
+          Close
+        </Button>
+      </DialogActions>
+    </Dialog>
   );
 };

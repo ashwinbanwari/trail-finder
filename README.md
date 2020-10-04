@@ -20,9 +20,8 @@ We had a lot of difficulty connecting the model we trained on Azure due to the [
 ## What we learned
 We learned many new technologies and are extremely happy that we were able to connect all the pieces of the puzzle into a working project! Through reading some of the existing literature ([1](https://web.cs.wpi.edu/~emmanuel/publications/PDFs/C30.pdf), [2](https://ieeexplore.ieee.org/document/8281813), [3](https://arxiv.org/ftp/arxiv/papers/1601/1601.06971.pdf)) related to our project, we were also fascinated by the complicated, living microcosm of society that Twitter encompasses within the 500 million tweets that are sent each day from every corner of the world.
 
-## What's next for EmpaTweet
-Here is a list of potential ideas that could expand EmpaTweet to further help with mental health and healthy conversations: 
-* Analyze a user's overall Tweet sentiment and based on that, offer suggestions in tone and mood to help produce a more sensitive and open-minded conversations 
-* For users who have a history of Tweets with heavy negative and unhappy sentiments, EmpaTweet could suggest some resources where emotional support is available
-* Display a trend of the overall sentiment for a conversation thread, so users can be more aware and clear-headed if a thread begins to get out of hand
-* Use overall Tweet sentiment and optional survey questions to produce a prediction for overall mental state so users can be more understanding of their own emotions and be encouraged to seek help if they believe they need it
+## What's next for Trailess
+Here is a list of potential ideas that could expand Trailess: 
+* Create a reccomended trails page based on prior trails that the users have visited
+* Create a see similar page on the bottom of each card so that trail-goers can view similar hikes to the one they're currently viewing
+* Display trends of popularity based on when reviews of the trail are published

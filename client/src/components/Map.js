@@ -9,8 +9,8 @@ class GoogleMap extends Component {
 
     render() {
         const style = {
-            width: '80%',
-            height: '70%'
+            width: 400,
+            height: 400
         }
         if (this.props.lat != null) {
             return( 
