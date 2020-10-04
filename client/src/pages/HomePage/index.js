@@ -102,6 +102,13 @@ const HomePage = ({ classes }) => {
   console.log(trails[0]);
   return (
     <div className={classes.page}>
+      <div style={{ marginBottom: '3em' }}>
+        <Typography variant="h2">Trailess</Typography>
+        <Typography variant="h5">
+          <i>Find less-used trails</i>
+        </Typography>
+      </div>
+
       <div className="filters">
         <Typography>Distance</Typography>
         <Typography>Gain</Typography>
