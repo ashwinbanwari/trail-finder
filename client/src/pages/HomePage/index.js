@@ -22,6 +22,8 @@ const styles = () => {
 };
 
 const HomePage = ({ classes }) => {
+
+  const [coords, setCoords] = useState({latitude: 0, longitude: 0});
   const getLocation = () => {
     if (navigator.geolocation) {
      navigator.geolocation.getCurrentPosition(locationSuccess);
@@ -29,7 +31,8 @@ const HomePage = ({ classes }) => {
   }
 
   const locationSuccess = (position) => {
-  //  setState({coords: position.coords, trails:state.trails});
+      setCoords(position.coords);
+      console.log(coords);
 
   }
 
@@ -73,6 +76,7 @@ const HomePage = ({ classes }) => {
 
   return (
     <div className={classes.page}>
+      <button onClick={getLocation}>Get Location</button>
       <CssBaseline />
       <OrderDialog
         open={dialogOpen}
@@ -80,10 +84,13 @@ const HomePage = ({ classes }) => {
         trail={dialogTrail}
       />
       {trails
+        .sort((a,b) => (
+          ((a.LATITUDE- coords.latitude)**2 + (a.LONGITUDE - coords.longitude)**2) - ((a.LATITUDE- coords.latitude)**2 + (b.LONGITUDE - coords.longitude)**2)
+        ))
         .filter((_, i) => i < 100)
         .map((trail) => (
           <div>
-            <Typography style={{ display: 'inline' }}>{trail.TITLE}</Typography>
+            <Typography key={trail.TITLE} style={{ display: 'inline' }}>{trail.TITLE}</Typography>
             <Button
               style={{ display: 'inline' }}
               onClick={() => {
