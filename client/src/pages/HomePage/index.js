@@ -11,7 +11,7 @@ import {
   // InputLabel,
   TextField,
   Card,
-  // Slider,
+  Slider,
   Grid,
 } from '@material-ui/core';
 import SearchBar from 'material-ui-search-bar';
@@ -21,10 +21,22 @@ import Papa from 'papaparse';
 import OrderDialog from '../../components/OrderDialog';
 import GoogleMap from './Map';
 
-const styles = () => {
+const styles = (theme) => {
   return {
     page: {
       textAlign: 'center',
+    },
+    bodyContainer:{
+      display: 'flex',
+      padding: '1em',
+      [theme.breakpoints.down('lg')]: {flexDirection:'column'},
+      [theme.breakpoints.up('lg')]: {flexDirection:'row'}
+    },
+    filters:{
+      margin: '0 auto',
+      padding: '1em',
+      [theme.breakpoints.down('lg')]: {width:'50vw'},
+      [theme.breakpoints.up('lg')]: {width:'15vw'}
     },
   };
 };
@@ -54,6 +66,10 @@ const HomePage = ({ classes }) => {
   const [coords, setCoords] = useState({ latitude: 0, longitude: 0 });
   const [searchText, setSearchText] = useState('');
   const [showLimit, setShowLimit] = useState(100);
+  const [distanceRange, setDistanceRange] = useState([0,100]);
+  const [gainRange, setGainRange] = useState([0,100]);
+  const [altitudeRange, setAltitudeRange] = useState([0,10000]);
+  const [reportRange, setReportRange] = useState([0,10000]);
   const getLocation = () => {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(locationSuccess);
@@ -62,8 +78,33 @@ const HomePage = ({ classes }) => {
 
   const locationSuccess = (position) => {
     setCoords(position.coords);
-    console.log(coords);
+    //console.log(coords);
   };
+
+
+  const updateDistance = (event,newValue) =>
+  {
+    setDistanceRange(newValue);
+    //console.log(newValue);
+  }
+
+  const updateGain = (event,newValue) =>
+  {
+    setGainRange(newValue);
+    //console.log(newValue);
+  }
+
+  const updateAltitude = (event,newValue) =>
+  {
+    setAltitudeRange(newValue);
+    //console.log(newValue);
+  }
+
+  const updateReport = (event,newValue) =>
+  {
+    setReportRange(newValue);
+    //console.log(newValue);
+  }
 
   // Trail:  {DISTANCE, DIST_TYPE, GAIN, HIGHEST, LATITUDE, LONGITUDE, RATING, RATING_COUNT, REGION, REPORT_COUNT, REPORT_DATE, TITLE, URL}
   let [trails, setTrails] = useState([]);
@@ -101,6 +142,9 @@ const HomePage = ({ classes }) => {
     setTrails(arr);
   }, []);
   console.log(trails[0]);
+
+
+
   return (
     <div className={classes.page}>
       <div style={{ marginBottom: '3em' }}>
@@ -110,12 +154,37 @@ const HomePage = ({ classes }) => {
           <i>Find less-used trails</i>
         </Typography>
       </div>
+      <div className={classes.bodyContainer}>
+      <div className={classes.filters}>
+        <Typography id="range-slider" gutterBottom>Distance</Typography>
+          <Slider
+            value={distanceRange}
+            onChange={updateDistance}
+            valueLabelDisplay="auto"
+            aria-labelledby="range-slider"
+            />
 
-      <div className="filters">
-        <Typography>Distance</Typography>
         <Typography>Gain</Typography>
+          <Slider
+            value={gainRange}
+            onChange={updateGain}
+            valueLabelDisplay="auto"
+            aria-labelledby="range-slider"
+            />
         <Typography>Highest Altitude</Typography>
+          <Slider
+            value={altitudeRange}
+            onChange={updateAltitude}
+            valueLabelDisplay="auto"
+            aria-labelledby="range-slider"
+            />
         <Typography>Report Count</Typography>
+          <Slider
+            value={reportRange}
+            onChange={updateReport}
+            valueLabelDisplay="auto"
+            aria-labelledby="range-slider"
+            />
       </div>
       <div className="main">
         <form style={{ maxWidth: '40vw', margin: 'auto' }}>
@@ -229,6 +298,7 @@ const HomePage = ({ classes }) => {
           )}
         </div>
       </div>
+    </div>
     </div>
   );
 };
