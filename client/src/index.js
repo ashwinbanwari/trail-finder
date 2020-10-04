@@ -11,8 +11,9 @@ import App from './App';
 const theme = createMuiTheme({
   palette: {
     background: {
-      default: '#F7F7F7',
+      default: '#003300',
     },
+    type: 'dark',
     primary: { 500: '#4CAF50' },
     secondary: { main: '#03A9F4' },
   },
