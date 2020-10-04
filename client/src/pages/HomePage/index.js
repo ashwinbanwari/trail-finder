@@ -158,10 +158,22 @@ const score = (report_count, rating_count,length) => {
     <div className={classes.page}>
       <div style={{ marginBottom: '3em' }}>
         {/*<GoogleMap/>*/}
-        <Typography variant="h2">Trailess</Typography>
-        <Typography variant="h5">
-          <i>Find the trail less traveled by</i>
-        </Typography>
+        <Card
+          style={{
+            width: 400,
+            marginLeft: 'auto',
+            marginRight: 'auto',
+            padding: '2.5em',
+            color: 'white',
+            background:
+              'linear-gradient(135deg,rgba(2,0,36,1) 0%, rgba(20,228,0,1) 0%, rgba(0,149,55,1) 50%)',
+          }}
+        >
+          <Typography variant="h2">Trailess</Typography>
+          <Typography variant="h5">
+            <i>Find the trail less traveled by</i>
+          </Typography>
+        </Card>
       </div>
       <div className={classes.bodyContainer}>
         <div className="main" style={{ margin: 'auto' }}>

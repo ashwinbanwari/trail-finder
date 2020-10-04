@@ -21,7 +21,7 @@ const theme = createMuiTheme({
 ReactDOM.render(
   <SnackbarProvider>
     <MuiThemeProvider theme={theme}>
-      <App />
+      <App/>
     </MuiThemeProvider>
   </SnackbarProvider>,
   document.getElementById('root')
