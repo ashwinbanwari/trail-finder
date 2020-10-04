@@ -5,14 +5,14 @@ import {
   Typography,
   Button,
   FormGroup,
-  FormControlLabel,
+  // FormControlLabel,
   FormControl,
-  Input,
-  InputLabel,
+  // Input,
+  // InputLabel,
   TextField,
   Card,
-  Slider
-  // Grid,
+  Slider,
+  Grid,
 } from '@material-ui/core';
 // import SearchBar from 'material-ui-search-bar';
 import { withRouter } from 'react-router-dom';
@@ -29,21 +29,17 @@ const styles = () => {
 };
 
 const HomePage = ({ classes }) => {
-
-  const [coords, setCoords] = useState({latitude: 0, longitude: 0});
+  const [coords, setCoords] = useState({ latitude: 0, longitude: 0 });
   const getLocation = () => {
     if (navigator.geolocation) {
-     navigator.geolocation.getCurrentPosition(locationSuccess);
-   }
-  }
+      navigator.geolocation.getCurrentPosition(locationSuccess);
+    }
+  };
 
   const locationSuccess = (position) => {
-      setCoords(position.coords);
-      console.log(coords);
-
-  }
-
-
+    setCoords(position.coords);
+    console.log(coords);
+  };
 
   // Trail:  {DISTANCE, DIST_TYPE, GAIN, HIGHEST, LATITUDE, LONGITUDE, RATING, RATING_COUNT, REGION, REPORT_COUNT, REPORT_DATE, TITLE, URL}
   let [trails, setTrails] = useState([]);
@@ -90,11 +86,13 @@ const HomePage = ({ classes }) => {
         <Typography>Report Count</Typography>
       </div>
       <div className="main">
-      <form on style={{"maxWidth":"40vw","margin":"auto"}}>
+      <form style={{"maxWidth":"40vw","margin":"auto"}}>
         <FormGroup style={{"margin":"auto"}}>
           <FormControl>
             <TextField />
-            <Button variant="contained" color="primary" onClick={getLocation}>Get Location</Button>
+            <Button variant="contained" color="primary" onClick={getLocation}>
+              Get Location
+            </Button>
           </FormControl>
         </FormGroup>
       </form>
@@ -104,26 +102,54 @@ const HomePage = ({ classes }) => {
         handleClose={() => setDialogOpen(false)}
         trail={dialogTrail}
       />
-    <div style={{"display":"flex", "flexDirection":"column"}}>
-      {trails
-        .sort((a,b) => (
-          ((a.LATITUDE- coords.latitude)**2 + (a.LONGITUDE - coords.longitude)**2) - ((b.LATITUDE- coords.latitude)**2 + (b.LONGITUDE - coords.longitude)**2)
-        ))
-        .filter((_, i) => i < 100)
-        .map((trail) => (
-          <Card key={trail.TITLE} style={{"margin": "1em auto","display":"flex", "flexDirection":"column","width":"45ch"}}>
-            <Typography style={{ display: 'inline' }}>{trail.TITLE + ", " + ((trail.LATITUDE- coords.latitude)**2 + (trail.LONGITUDE - coords.longitude)**2) }</Typography>
-            <Button
-              style={{ display: 'inline' }}
-              onClick={() => {
-                setDialogTrail(trail);
-                setDialogOpen(true);
-              }}
-            >
-              Learn More
-            </Button>
-          </Card>
-        ))}
+      <div
+        style={{
+          display: 'flex',
+          flexDirection: 'column',
+          marginTop: '4em',
+          maxWidth: 1300,
+          marginLeft: 'auto',
+          marginRight: 'auto',
+        }}
+      >
+        <Grid container spacing={8}>
+          {trails
+            .sort(
+              (a, b) =>
+                (a.LATITUDE - coords.latitude) ** 2 +
+                (a.LONGITUDE - coords.longitude) ** 2 -
+                ((a.LATITUDE - coords.latitude) ** 2 +
+                  (b.LONGITUDE - coords.longitude) ** 2)
+            )
+            .filter((_, i) => i < 100)
+            .map((trail) => (
+              <Grid item xs={12} sm={6} md={4}>
+                <Card
+                  style={{
+                    margin: '1em auto',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    paddingTop: 15,
+                    height: 100,
+                    width: '40ch',
+                  }}
+                >
+                  <Typography key={trail.TITLE} style={{ display: 'inline' }}>
+                    {trail.TITLE}
+                  </Typography>
+                  <Button
+                    style={{ display: 'inline' }}
+                    onClick={() => {
+                      setDialogTrail(trail);
+                      setDialogOpen(true);
+                    }}
+                  >
+                    Learn More
+                  </Button>
+                </Card>
+              </Grid>
+            ))}
+        </Grid>
       </div>
       </div>
     </div>
