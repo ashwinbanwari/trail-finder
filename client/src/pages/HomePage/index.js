@@ -70,6 +70,7 @@ const HomePage = ({ classes }) => {
   const [gainRange, setGainRange] = useState([0,28000]);
   const [altitudeRange, setAltitudeRange] = useState([0,13000]);
   const [reportRange, setReportRange] = useState([0,2000]);
+  const [scoreRange, setScoreRange] = useState([0,2000]);
   const getLocation = () => {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(locationSuccess);
@@ -103,6 +104,12 @@ const HomePage = ({ classes }) => {
   const updateReport = (event,newValue) =>
   {
     setReportRange(newValue);
+    //console.log(newValue);
+  }
+
+  const updateScore = (event,newValue) =>
+  {
+    setScoreRange(newValue);
     //console.log(newValue);
   }
 
@@ -143,6 +150,10 @@ const HomePage = ({ classes }) => {
   }, []);
   console.log(trails[0]);
 
+
+const score = (report_count, rating_count,distance) => {
+  return (report_count + rating_count) / (distance + 0.0001);
+}
 
 
   return (
@@ -186,6 +197,14 @@ const HomePage = ({ classes }) => {
             max={2000}
             value={reportRange}
             onChange={updateReport}
+            valueLabelDisplay="auto"
+            aria-labelledby="range-slider"
+            />
+          <Typography id="range-slider" gutterBottom>Rating</Typography>
+          <Slider
+            max={200}
+            value={scoreRange}
+            onChange={updateScore}
             valueLabelDisplay="auto"
             aria-labelledby="range-slider"
             />
@@ -244,6 +263,8 @@ const HomePage = ({ classes }) => {
                 shouldKeep = shouldKeep && (trail.GAIN >= gainRange[0] && trail.GAIN <= gainRange[1]);
                 shouldKeep = shouldKeep && (trail.HIGHEST >= altitudeRange[0] && trail.HIGHEST <= altitudeRange[1]);
                 shouldKeep = shouldKeep && (trail.REPORT_COUNT >= reportRange[0] && trail.REPORT_COUNT <= reportRange[1]);
+                let trailScore = score(trail.REPORT_COUNT,trail.RATING_COUNT, trail.DISTANCE);
+                shouldKeep = shouldKeep && (trailScore >= scoreRange[0] && trailScore <= scoreRange[1]);
                 return shouldKeep;
               })
               .map((trail) => (
