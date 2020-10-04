@@ -156,6 +156,7 @@ const score = (report_count, rating_count,length) => {
   return (
     <div className={classes.page}>
       <div style={{ marginBottom: '3em' }}>
+        <GoogleMap trails={trails}/>
         <Typography variant="h2">Trailess</Typography>
         <Typography variant="h5">
           <i>Find the trail less traveled by</i>
