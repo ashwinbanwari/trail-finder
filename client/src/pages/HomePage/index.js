@@ -154,7 +154,7 @@ const HomePage = ({ classes }) => {
   return (
     <div className={classes.page}>
       <div style={{ marginBottom: '3em' }}>
-        {/*<GoogleMap/>*/}
+        <GoogleMap trails = {trails} />
         <Card
           style={{
             width: 400,
