@@ -20,7 +20,7 @@ firebase.initializeApp(config);
 
 export default () => {
   return (
-    <div>
+    <div style={{"padding":"1em"}}>
       <Router>
         <Switch>
           <Route

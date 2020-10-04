@@ -4,7 +4,13 @@ import {
   CssBaseline,
   Typography,
   Button,
-  // Card,
+  FormGroup,
+  FormControlLabel,
+  FormControl,
+  Input,
+  InputLabel,
+  TextField,
+  Card,
   // Grid,
 } from '@material-ui/core';
 // import SearchBar from 'material-ui-search-bar';
@@ -76,20 +82,28 @@ const HomePage = ({ classes }) => {
 
   return (
     <div className={classes.page}>
-      <button onClick={getLocation}>Get Location</button>
+      <form on style={{"maxWidth":"40vw","margin":"auto"}}>
+        <FormGroup style={{"margin":"auto"}}>
+          <FormControl>
+            <TextField />
+            <Button variant="contained" color="primary" onClick={getLocation}>Get Location</Button>
+          </FormControl>
+        </FormGroup>
+      </form>
       <CssBaseline />
       <OrderDialog
         open={dialogOpen}
         handleClose={() => setDialogOpen(false)}
         trail={dialogTrail}
       />
+    <div style={{"display":"flex", "flexDirection":"column"}}>
       {trails
         .sort((a,b) => (
           ((a.LATITUDE- coords.latitude)**2 + (a.LONGITUDE - coords.longitude)**2) - ((a.LATITUDE- coords.latitude)**2 + (b.LONGITUDE - coords.longitude)**2)
         ))
         .filter((_, i) => i < 100)
         .map((trail) => (
-          <div>
+          <Card style={{"margin": "1em auto","display":"flex", "flexDirection":"column","width":"40ch"}}>
             <Typography key={trail.TITLE} style={{ display: 'inline' }}>{trail.TITLE}</Typography>
             <Button
               style={{ display: 'inline' }}
@@ -100,8 +114,9 @@ const HomePage = ({ classes }) => {
             >
               Learn More
             </Button>
-          </div>
+          </Card>
         ))}
+      </div>
     </div>
   );
 };
