@@ -28,6 +28,27 @@ const styles = () => {
   };
 };
 
+function distance(lat1, lon1, lat2, lon2) {
+  if (lat1 == lat2 && lon1 == lon2) {
+    return 0;
+  } else {
+    var radlat1 = (Math.PI * lat1) / 180;
+    var radlat2 = (Math.PI * lat2) / 180;
+    var theta = lon1 - lon2;
+    var radtheta = (Math.PI * theta) / 180;
+    var dist =
+      Math.sin(radlat1) * Math.sin(radlat2) +
+      Math.cos(radlat1) * Math.cos(radlat2) * Math.cos(radtheta);
+    if (dist > 1) {
+      dist = 1;
+    }
+    dist = Math.acos(dist);
+    dist = (dist * 180) / Math.PI;
+    dist = dist * 60 * 1.1515;
+    return dist;
+  }
+}
+
 const HomePage = ({ classes }) => {
   const [coords, setCoords] = useState({ latitude: 0, longitude: 0 });
   const getLocation = () => {
@@ -86,71 +107,85 @@ const HomePage = ({ classes }) => {
         <Typography>Report Count</Typography>
       </div>
       <div className="main">
-      <form style={{"maxWidth":"40vw","margin":"auto"}}>
-        <FormGroup style={{"margin":"auto"}}>
-          <FormControl>
-            <TextField />
-            <Button variant="contained" color="primary" onClick={getLocation}>
-              Get Location
-            </Button>
-          </FormControl>
-        </FormGroup>
-      </form>
-      <CssBaseline />
-      <OrderDialog
-        open={dialogOpen}
-        handleClose={() => setDialogOpen(false)}
-        trail={dialogTrail}
-      />
-      <div
-        style={{
-          display: 'flex',
-          flexDirection: 'column',
-          marginTop: '4em',
-          maxWidth: 1300,
-          marginLeft: 'auto',
-          marginRight: 'auto',
-        }}
-      >
-        <Grid container spacing={8}>
-          {trails
-            .sort(
-              (a, b) =>
-                (a.LATITUDE - coords.latitude) ** 2 +
-                (a.LONGITUDE - coords.longitude) ** 2 -
-                ((a.LATITUDE - coords.latitude) ** 2 +
-                  (b.LONGITUDE - coords.longitude) ** 2)
-            )
-            .filter((_, i) => i < 100)
-            .map((trail) => (
-              <Grid item xs={12} sm={6} md={4}>
-                <Card
-                  style={{
-                    margin: '1em auto',
-                    display: 'flex',
-                    flexDirection: 'column',
-                    paddingTop: 15,
-                    height: 100,
-                    width: '40ch',
-                  }}
-                >
-                  <Typography key={trail.TITLE} style={{ display: 'inline' }}>
-                    {trail.TITLE}
-                  </Typography>
-                  <Button
-                    style={{ display: 'inline' }}
-                    onClick={() => {
-                      setDialogTrail(trail);
-                      setDialogOpen(true);
+        <form style={{ maxWidth: '40vw', margin: 'auto' }}>
+          <FormGroup style={{ margin: 'auto' }}>
+            <FormControl>
+              <TextField />
+              <Button variant="contained" color="primary" onClick={getLocation}>
+                Get Location
+              </Button>
+            </FormControl>
+          </FormGroup>
+        </form>
+        <CssBaseline />
+        <OrderDialog
+          open={dialogOpen}
+          handleClose={() => setDialogOpen(false)}
+          trail={dialogTrail}
+        />
+        <div
+          style={{
+            display: 'flex',
+            flexDirection: 'column',
+            marginTop: '4em',
+            maxWidth: 1300,
+            marginLeft: 'auto',
+            marginRight: 'auto',
+          }}
+        >
+          <Grid container spacing={8}>
+            {trails
+              .sort(
+                (a, b) =>
+                  (a.LATITUDE - coords.latitude) ** 2 +
+                  (a.LONGITUDE - coords.longitude) ** 2 -
+                  ((a.LATITUDE - coords.latitude) ** 2 +
+                    (b.LONGITUDE - coords.longitude) ** 2)
+              )
+              .filter((_, i) => i < 100)
+              .map((trail) => (
+                <Grid item xs={12} sm={6} md={4}>
+                  <Card
+                    style={{
+                      margin: '0 auto',
+                      display: 'flex',
+                      flexDirection: 'column',
+                      paddingTop: 22,
+                      height: 125,
+                      width: '40ch',
                     }}
                   >
-                    Learn More
-                  </Button>
-                </Card>
-              </Grid>
-            ))}
-        </Grid>
-      </div>
+                    <Typography key={trail.TITLE} style={{ display: 'inline' }}>
+                      {trail.TITLE}
+                    </Typography>
+                    {coords.latitude !== 0 ? (
+                      <Typography>
+                        Distance:{' '}
+                        {distance(
+                          trail.LATITUDE,
+                          trail.LONGITUDE,
+                          coords.latitude,
+                          coords.longitude
+                        ).toFixed(2)}{' '}
+                        Miles
+                      </Typography>
+                    ) : (
+                      <div />
+                    )}
+                    <Button
+                      style={{ display: 'inline' }}
+                      onClick={() => {
+                        setDialogTrail(trail);
+                        setDialogOpen(true);
+                      }}
+                    >
+                      Learn More
+                    </Button>
+                  </Card>
+                </Grid>
+              ))}
+          </Grid>
+        </div>
       </div>
     </div>
   );
