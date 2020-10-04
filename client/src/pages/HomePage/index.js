@@ -11,6 +11,7 @@ import {
   // InputLabel,
   TextField,
   Card,
+  Slider,
   Grid,
 } from '@material-ui/core';
 // import SearchBar from 'material-ui-search-bar';
@@ -75,11 +76,18 @@ const HomePage = ({ classes }) => {
     }
     setTrails(arr);
   }, []);
-
+  console.log(trails[0]);
   return (
     <div className={classes.page}>
-      <form on style={{ maxWidth: '40vw', margin: 'auto' }}>
-        <FormGroup style={{ margin: 'auto' }}>
+      <div className="filters">
+        <Typography>Distance</Typography>
+        <Typography>Gain</Typography>
+        <Typography>Highest Altitude</Typography>
+        <Typography>Report Count</Typography>
+      </div>
+      <div className="main">
+      <form style={{"maxWidth":"40vw","margin":"auto"}}>
+        <FormGroup style={{"margin":"auto"}}>
           <FormControl>
             <TextField />
             <Button variant="contained" color="primary" onClick={getLocation}>
@@ -142,6 +150,7 @@ const HomePage = ({ classes }) => {
               </Grid>
             ))}
         </Grid>
+      </div>
       </div>
     </div>
   );
