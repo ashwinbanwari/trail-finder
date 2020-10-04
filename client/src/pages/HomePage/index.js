@@ -3,12 +3,15 @@ import {
   withStyles,
   CssBaseline,
   Typography,
+  Button,
   // Card,
   // Grid,
 } from '@material-ui/core';
 // import SearchBar from 'material-ui-search-bar';
 import { withRouter } from 'react-router-dom';
-import firebase from 'firebase';
+import Data from '../../utils/data';
+import Papa from 'papaparse';
+import OrderDialog from '../../components/OrderDialog';
 
 const styles = () => {
   return {
@@ -18,10 +21,6 @@ const styles = () => {
   };
 };
 
-
-
-
-
 const HomePage = ({ classes }) => {
   const getLocation = () => {
     if (navigator.geolocation) {
@@ -30,50 +29,73 @@ const HomePage = ({ classes }) => {
   }
 
   const locationSuccess = (position) => {
-    setState({coords: position.coords, trails:state.trails});
+  //  setState({coords: position.coords, trails:state.trails});
 
   }
 
 
+
   // Trail:  {DISTANCE, DIST_TYPE, GAIN, HIGHEST, LATITUDE, LONGITUDE, RATING, RATING_COUNT, REGION, REPORT_COUNT, REPORT_DATE, TITLE, URL}
-  let [state, setState] = useState({trails: [], coords:{latitude: 0, longitude: 0}});
-  state.trails.sort((a,b) =>
-    ((a.LATITUDE - state.coords.latitude)**2 + (a.LONGITUDE - state.coords.longitude)**2) -
-    ((b.LATITUDE - state.coords.longitude)**2 + (b.LONGITUDE - state.coords.longitude)**2)
-  );
+  let [trails, setTrails] = useState([]);
+  let [dialogOpen, setDialogOpen] = useState(false);
+  let [dialogTrail, setDialogTrail] = useState(null);
+
   useEffect(() => {
-    const fetchData = async () => {
-      const querySnapshot = await firebase
-        .firestore()
-        .collection('trails')
-        .where('REPORT_COUNT', '<', 1000)
-        .orderBy("REPORT_COUNT", "asc")
-        .limit(40)
-        .get();
-      let trails = [];
-      querySnapshot.docs.forEach((doc) => {
-        trails.push(doc.data());
-      });
-      setState({coords:state.coords,trails:trails});
-    };
-    fetchData();
-  }, [state.coords]);
+    const trails = Data.trails;
+    const data = Papa.parse(trails).data;
+    let arr = [];
+    // Parse CSV data
+    for (var i = 1; i < data.length; i++) {
+      var curr = {};
+      for (var j = 0; j < data[0].length; j++) {
+        if (
+          typeof data[i][j] !== 'undefined' &&
+          data[i][j] &&
+          data[i][j] !== ''
+        ) {
+          if (
+            data[0][j] === 'DIST_TYPE' ||
+            data[0][j] === 'REGION' ||
+            data[0][j] === 'REPORT_DATE' ||
+            data[0][j] === 'TITLE' ||
+            data[0][j] === 'URL'
+          ) {
+            curr[data[0][j]] = data[i][j].trim();
+          } else {
+            curr[data[0][j]] = parseInt(data[i][j]);
+          }
+        }
+      }
+      arr.push(curr);
+    }
+    setTrails(arr);
+  }, []);
 
-
-  //console.log(trails[0]);
   return (
-    <>
-    <button onClick={getLocation}>Get My Location</button>
-
-    <div style={{"display": "flex", "flexDirection":"column"}} className={classes.page}>
+    <div className={classes.page}>
       <CssBaseline />
-
-      {state.trails.map((trail) =>
-        <Typography key={trail.TITLE}>{trail.TITLE}, {trail.RATING_COUNT + trail.REPORT_COUNT}</Typography>
-      )}
-
-  </div>
-  </>
+      <OrderDialog
+        open={dialogOpen}
+        handleClose={() => setDialogOpen(false)}
+        trail={dialogTrail}
+      />
+      {trails
+        .filter((_, i) => i < 100)
+        .map((trail) => (
+          <div>
+            <Typography style={{ display: 'inline' }}>{trail.TITLE}</Typography>
+            <Button
+              style={{ display: 'inline' }}
+              onClick={() => {
+                setDialogTrail(trail);
+                setDialogOpen(true);
+              }}
+            >
+              Learn More
+            </Button>
+          </div>
+        ))}
+    </div>
   );
 };
 
