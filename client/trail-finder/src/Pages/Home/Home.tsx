@@ -2,14 +2,21 @@ import React from "react";
 import {InputGroup, Form, Button} from "react-bootstrap";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faSearch} from "@fortawesome/free-solid-svg-icons";
+
 function Home() {
+    const handleSubmit = (event: any) => {
+        event.preventDefault();
+        const form = event.currentTarget;
+        console.log(form);
+    };
+
     return (
         <>
-            <Form>
-                <Form.Group controlId="searchLocation">
+            <Form onSubmit={handleSubmit}>
+                <Form.Group controlId="searchLocation" >
                     <InputGroup>
                         <InputGroup.Prepend>
-                            <Button> <FontAwesomeIcon icon={faSearch}/> </Button>
+                            <Button type="submit"> <FontAwesomeIcon icon={faSearch}/> </Button>
                         </InputGroup.Prepend>
                         <Form.Control size="lg" type="text" />
 
