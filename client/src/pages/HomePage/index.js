@@ -137,7 +137,7 @@ const HomePage = ({ classes }) => {
           ) {
             curr[data[0][j]] = data[i][j].trim();
           } else {
-            curr[data[0][j]] = parseInt(data[i][j]);
+            curr[data[0][j]] = parseFloat(data[i][j]);
           }
         }
       }
