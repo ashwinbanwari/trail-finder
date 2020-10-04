@@ -14,7 +14,7 @@ import {
   Slider,
   Grid,
 } from '@material-ui/core';
-// import SearchBar from 'material-ui-search-bar';
+import SearchBar from 'material-ui-search-bar';
 import { withRouter } from 'react-router-dom';
 import Data from '../../utils/data';
 import Papa from 'papaparse';
@@ -24,8 +24,15 @@ const styles = (theme) => {
   return {
     page: {
       textAlign: 'center',
+    },
+    bodyContainer:{
       [theme.breakpoints.down('lg')]: {flexDirection:'column'},
       [theme.breakpoints.up('lg')]: {flexDirection:'row'}
+    },
+    filters:{
+      margin: 'auto',
+      [theme.breakpoints.down('lg')]: {width:'90%'},
+      [theme.breakpoints.up('lg')]: {width:'15vw'}
     },
   };
 };
@@ -53,6 +60,7 @@ function distance(lat1, lon1, lat2, lon2) {
 
 const HomePage = ({ classes }) => {
   const [coords, setCoords] = useState({ latitude: 0, longitude: 0 });
+  const [searchText, setSearchText] = useState('');
   const [showLimit, setShowLimit] = useState(100);
   const [distanceRange, setDistanceRange] = useState([0,100]);
   const [gainRange, setGainRange] = useState([0,100]);
@@ -132,9 +140,17 @@ const HomePage = ({ classes }) => {
   console.log(trails[0]);
 
 
+
   return (
-    <div className={classes.page} style={{"display":"flex"}}>
-      <div className="filters" style={{"width":"15vw"}}>
+    <div className={classes.page}>
+      <div style={{ marginBottom: '3em' }}>
+        <Typography variant="h2">Trailess</Typography>
+        <Typography variant="h5">
+          <i>Find less-used trails</i>
+        </Typography>
+      </div>
+      <div className={classes.bodyContainer}>
+      <div className={classes.filters}>
         <Typography id="range-slider" gutterBottom>Distance</Typography>
           <Slider
             value={distanceRange}
@@ -167,11 +183,16 @@ const HomePage = ({ classes }) => {
       </div>
       <div className="main">
         <form style={{ maxWidth: '40vw', margin: 'auto' }}>
+          <SearchBar
+            placeholder="Search By Trail Name"
+            value={searchText}
+            onChange={(val) => setSearchText(val)}
+          />
           <FormGroup style={{ margin: 'auto' }}>
             <FormControl>
               <TextField />
               <Button variant="contained" color="primary" onClick={getLocation}>
-                Get Location
+                Find Trails Near Me
               </Button>
             </FormControl>
           </FormGroup>
@@ -201,7 +222,16 @@ const HomePage = ({ classes }) => {
                   ((a.LATITUDE - coords.latitude) ** 2 +
                     (b.LONGITUDE - coords.longitude) ** 2)
               )
-              .filter((_, i) => i < showLimit)
+              .filter((trail, i) => {
+                let shouldKeep = true;
+                if (searchText !== '') {
+                  shouldKeep =
+                    shouldKeep &&
+                    trail.TITLE.includes(searchText.toLowerCase());
+                }
+                shouldKeep = shouldKeep && i < showLimit;
+                return shouldKeep;
+              })
               .map((trail) => (
                 <Grid item xs={12} sm={6} md={4}>
                   <Card
@@ -250,8 +280,8 @@ const HomePage = ({ classes }) => {
                 marginTop: '1.5em',
                 marginBottom: '2em',
                 textAlign: 'center',
-                marginLeft:'auto',
-                marginRight: 'auto'
+                marginLeft: 'auto',
+                marginRight: 'auto',
               }}
             >
               <Button onClick={() => setShowLimit(showLimit + 200)}>
@@ -263,6 +293,7 @@ const HomePage = ({ classes }) => {
           )}
         </div>
       </div>
+    </div>
     </div>
   );
 };
