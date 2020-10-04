@@ -3,6 +3,7 @@ import {
   withStyles,
   CssBaseline,
   Typography,
+  Button,
   // Card,
   // Grid,
 } from '@material-ui/core';
@@ -10,6 +11,7 @@ import {
 import { withRouter } from 'react-router-dom';
 import Data from '../../utils/data';
 import Papa from 'papaparse';
+import OrderDialog from '../../components/OrderDialog';
 
 const styles = () => {
   return {
@@ -22,6 +24,8 @@ const styles = () => {
 const HomePage = ({ classes }) => {
   // Trail:  {DISTANCE, DIST_TYPE, GAIN, HIGHEST, LATITUDE, LONGITUDE, RATING, RATING_COUNT, REGION, REPORT_COUNT, REPORT_DATE, TITLE, URL}
   let [trails, setTrails] = useState([]);
+  let [dialogOpen, setDialogOpen] = useState(false);
+  let [dialogTrail, setDialogTrail] = useState(null);
 
   useEffect(() => {
     const trails = Data.trails;
@@ -57,10 +61,26 @@ const HomePage = ({ classes }) => {
   return (
     <div className={classes.page}>
       <CssBaseline />
+      <OrderDialog
+        open={dialogOpen}
+        handleClose={() => setDialogOpen(false)}
+        trail={dialogTrail}
+      />
       {trails
         .filter((_, i) => i < 100)
         .map((trail) => (
-          <Typography>{trail.TITLE}</Typography>
+          <div>
+            <Typography style={{ display: 'inline' }}>{trail.TITLE}</Typography>
+            <Button
+              style={{ display: 'inline' }}
+              onClick={() => {
+                setDialogTrail(trail);
+                setDialogOpen(true);
+              }}
+            >
+              Learn More
+            </Button>
+          </div>
         ))}
     </div>
   );
