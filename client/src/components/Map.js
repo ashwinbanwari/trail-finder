@@ -1,20 +1,25 @@
 import React, {Component} from 'react';
-import { Map, Marker, GoogleApiWrapper } from 'google-maps-react';
+import { Map, Marker, GoogleApiWrapper, Circle } from 'google-maps-react';
 
 class GoogleMap extends Component {
     constructor(props) {
         super(props);
     }
 
+    
 
     render() {
-        const style = {
+        const styleSmallMap = {
             width: 400,
             height: 400
         }
+        const styleBigMap = {
+            width: '50%',
+            height: '50%',
+        }
         if (this.props.lat != null) {
             return( 
-                <div id = "google-map" style = {style}>
+                <div id = "google-map" style = {styleSmallMap}>
                     <Map
                     google={this.props.google}
                     zoom={10}
@@ -22,7 +27,7 @@ class GoogleMap extends Component {
                     lat: this.props.lat,
                     lng: this.props.lng
                     }}
-                    style={style}
+                    style={styleSmallMap}
                     >
                     <Marker/>
                     </Map>
@@ -30,21 +35,27 @@ class GoogleMap extends Component {
             );
         } else { // main map
             return(
-                <div id = "google-map" style = {style}>
+                <div id = "google-map" style = {styleBigMap}>
                     <Map
                     google={this.props.google}
-                    zoom={10}
+                    zoom={6}
                     initialCenter={{
                     lat: 47.5,
                     lng: -120
                     }}
-                    style={style}
+                    style={styleBigMap}
                     >
                     {
                     this.props.trails.map((item) =>
-                        <Marker
-                        name={item.TITLE}
-                        position={{lat: item.LATITUDE, lng: item.LONGITUDE}}
+                        <Circle
+                        center={{lat: item.LATITUDE, lng: item.LONGITUDE}}
+                        radius={4000}
+                        strokeColor= "#FF0000"
+                        strokeOpacity= {0.5}
+                        strokeWeight= {5}
+                        fillColor= "#FF0000"
+                        fillOpacity= {2}
+                        strokeColor='transparent'
                         />
                     )}
                     </Map>

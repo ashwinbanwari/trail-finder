@@ -154,7 +154,6 @@ const HomePage = ({ classes }) => {
   return (
     <div className={classes.page}>
       <div style={{ marginBottom: '3em' }}>
-        <GoogleMap trails = {trails} />
         <Card
           style={{
             width: 400,
@@ -171,6 +170,11 @@ const HomePage = ({ classes }) => {
             <i>Find the trail less traveled by</i>
           </Typography>
         </Card>
+        
+        
+      </div>
+      <div style = {{marginLeft: '23%', width: '60%', height: '33em'}}>
+        <GoogleMap trails = {trails}/>
       </div>
       <div className={classes.bodyContainer}>
         <div className="main" style={{ margin: 'auto', width: '100%' }}>
