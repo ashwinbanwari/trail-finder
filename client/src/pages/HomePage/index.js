@@ -11,6 +11,7 @@ import {
   InputLabel,
   TextField,
   Card,
+  Slider
   // Grid,
 } from '@material-ui/core';
 // import SearchBar from 'material-ui-search-bar';
@@ -79,9 +80,16 @@ const HomePage = ({ classes }) => {
     }
     setTrails(arr);
   }, []);
-
+  console.log(trails[0]);
   return (
     <div className={classes.page}>
+      <div className="filters">
+        <Typography>Distance</Typography>
+        <Typography>Gain</Typography>
+        <Typography>Highest Altitude</Typography>
+        <Typography>Report Count</Typography>
+      </div>
+      <div className="main">
       <form on style={{"maxWidth":"40vw","margin":"auto"}}>
         <FormGroup style={{"margin":"auto"}}>
           <FormControl>
@@ -99,12 +107,12 @@ const HomePage = ({ classes }) => {
     <div style={{"display":"flex", "flexDirection":"column"}}>
       {trails
         .sort((a,b) => (
-          ((a.LATITUDE- coords.latitude)**2 + (a.LONGITUDE - coords.longitude)**2) - ((a.LATITUDE- coords.latitude)**2 + (b.LONGITUDE - coords.longitude)**2)
+          ((a.LATITUDE- coords.latitude)**2 + (a.LONGITUDE - coords.longitude)**2) - ((b.LATITUDE- coords.latitude)**2 + (b.LONGITUDE - coords.longitude)**2)
         ))
         .filter((_, i) => i < 100)
         .map((trail) => (
-          <Card style={{"margin": "1em auto","display":"flex", "flexDirection":"column","width":"40ch"}}>
-            <Typography key={trail.TITLE} style={{ display: 'inline' }}>{trail.TITLE}</Typography>
+          <Card key={trail.TITLE} style={{"margin": "1em auto","display":"flex", "flexDirection":"column","width":"45ch"}}>
+            <Typography style={{ display: 'inline' }}>{trail.TITLE + ", " + ((trail.LATITUDE- coords.latitude)**2 + (trail.LONGITUDE - coords.longitude)**2) }</Typography>
             <Button
               style={{ display: 'inline' }}
               onClick={() => {
@@ -116,6 +124,7 @@ const HomePage = ({ classes }) => {
             </Button>
           </Card>
         ))}
+      </div>
       </div>
     </div>
   );
