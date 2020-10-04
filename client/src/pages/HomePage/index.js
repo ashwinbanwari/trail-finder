@@ -13,7 +13,11 @@ import {
   Card,
   Slider,
   Grid,
+  Accordion,
+  AccordionSummary,
+
 } from '@material-ui/core';
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import SearchBar from 'material-ui-search-bar';
 import { withRouter } from 'react-router-dom';
 import Data from '../../utils/data';
@@ -33,10 +37,9 @@ const styles = (theme) => {
       [theme.breakpoints.up('lg')]: {flexDirection:'row'}
     },
     filters:{
-      margin: '0 auto',
       padding: '1em',
-      [theme.breakpoints.down('lg')]: {width:'50vw'},
-      [theme.breakpoints.up('lg')]: {width:'15vw'}
+      [theme.breakpoints.down('lg')]: {width:'75vw', margin: 'auto'},
+      [theme.breakpoints.up('lg')]: {width:'20vw', margin: '1em'}
     },
   };
 };
@@ -152,7 +155,7 @@ const HomePage = ({ classes }) => {
 
 
 const score = (report_count, rating_count,distance) => {
-  return (report_count + rating_count) / (distance + 0.0001);
+  return ((report_count + rating_count - 25) / (1)) / (distance + 0.0001);
 }
 
 
@@ -167,49 +170,83 @@ const score = (report_count, rating_count,distance) => {
       </div>
       <div className={classes.bodyContainer}>
       <div className={classes.filters}>
+        <Accordion style={{'padding':"0.5em"}}>
+          <AccordionSummary
+            expandIcon={<ExpandMoreIcon />}
+            aria-controls="panel1a-content"
+            id="panel1a-header"
+          >
+            <Typography className={classes.heading}>Filters</Typography>
+          </AccordionSummary>
         <Typography id="range-slider" gutterBottom>Distance</Typography>
+          <div style={{"display":"flex"}}>
+          <Typography style={{"width":"5ch","margin":"0 0.5em"}}>{distanceRange[0]}</Typography>
           <Slider
+            style={{"width": "70%",'flex':'1 1 auto'}}
             max={1300}
             value={distanceRange}
             onChange={updateDistance}
             valueLabelDisplay="auto"
             aria-labelledby="range-slider"
             />
-
+          <Typography style={{"width":"5ch","margin":"0 0.5em"}}>{distanceRange[1]}</Typography>
+</div>
         <Typography>Gain</Typography>
+        <div style={{"display":"flex"}}>
+          <Typography style={{"width":"5ch","margin":"0 0.5em"}}>{gainRange[0]}</Typography>
           <Slider
+            style={{"width": "70%",'flex':'1 1 auto'}}
             max={28000}
             value={gainRange}
             onChange={updateGain}
             valueLabelDisplay="auto"
             aria-labelledby="range-slider"
             />
+          <Typography style={{"width":"5ch","margin":"0 0.5em"}}>{gainRange[1]}</Typography>
+          </div>
+
         <Typography>Highest Altitude</Typography>
+        <div style={{"display":"flex"}}>
+          <Typography style={{"width":"5ch","margin":"0 0.5em"}}>{altitudeRange[0]}</Typography>
           <Slider
+            style={{"width": "70%",'flex':'1 1 auto'}}
             value={altitudeRange}
             onChange={updateAltitude}
             max={13000}
             valueLabelDisplay="auto"
             aria-labelledby="range-slider"
             />
+          <Typography style={{"width":"5ch","margin":"0 0.5em"}}>{altitudeRange[1]}</Typography>
+        </div>
         <Typography>Report Count</Typography>
+        <div style={{"display":"flex"}}>
+          <Typography style={{"width":"5ch","margin":"0 0.5em"}}>{reportRange[0]}</Typography>
           <Slider
+            style={{"width": "70%",'flex':'1 1 auto'}}
             max={2000}
             value={reportRange}
             onChange={updateReport}
             valueLabelDisplay="auto"
             aria-labelledby="range-slider"
             />
+          <Typography style={{"width":"5ch","margin":"0 0.5em"}}>{reportRange[1]}</Typography>
+        </div>
           <Typography id="range-slider" gutterBottom>Rating</Typography>
+          <div style={{"display":"flex"}}>
+            <Typography style={{"width":"5ch","margin":"0 0.5em"}}>{scoreRange[0]}</Typography>
           <Slider
+            style={{"width": "70%",'flex':'1 1 auto'}}
             max={200}
             value={scoreRange}
             onChange={updateScore}
-            valueLabelDisplay="auto"
+            valueLabelDisplay="auto"s
             aria-labelledby="range-slider"
             />
+          <Typography style={{"width":"5ch","margin":"0 0.5em"}}>{scoreRange[1]}</Typography>
+        </div>
+          </Accordion>
       </div>
-      <div className="main">
+      <div className="main" style={{"margin":"auto"}}>
         <form style={{ maxWidth: '40vw', margin: 'auto' }}>
           <SearchBar
             placeholder="Search By Trail Name"
