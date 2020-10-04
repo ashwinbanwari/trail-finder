@@ -147,12 +147,9 @@ const HomePage = ({ classes }) => {
     console.log('API REQUEST');
   }, []);
 
-
-
-const score = (report_count, rating_count,length) => {
-  return (Math.abs(report_count + rating_count - 25) / (1)) / (length + 0.0001);
-}
-
+  const score = (report_count, rating_count, length) => {
+    return Math.abs(report_count + rating_count - 25) / 1 / (length + 0.0001);
+  };
 
   return (
     <div className={classes.page}>
@@ -176,9 +173,14 @@ const score = (report_count, rating_count,length) => {
         </Card>
       </div>
       <div className={classes.bodyContainer}>
-        <div className="main" style={{ margin: 'auto' }}>
+        <div className="main" style={{ margin: 'auto', width: '100%' }}>
           <div
-            style={{ maxWidth: 1250, marginLeft: 'auto', marginRight: 'auto' }}
+            style={{
+              maxWidth: 1250,
+              marginLeft: 'auto',
+              marginRight: 'auto',
+              width: '100%',
+            }}
           >
             <SearchBar
               placeholder="Search By Trail Name"
@@ -267,7 +269,6 @@ const score = (report_count, rating_count,length) => {
                     </Typography>
                   </div>
 
-
                   <Typography id="range-slider" gutterBottom>
                     Score
                   </Typography>
@@ -277,21 +278,20 @@ const score = (report_count, rating_count,length) => {
                       {scoreRange[0]}
                     </Typography>
                     <Tooltip title="How crowded a trail is (lower is better)">
-                    <Slider
-                      style={{ width: '70%', flex: '1 1 auto' }}
-                      max={200}
-                      value={scoreRange}
-                      onChange={updateScore}
-                      valueLabelDisplay="auto"
-                      s
-                      aria-labelledby="range-slider"
-                    />
-                  </Tooltip>
+                      <Slider
+                        style={{ width: '70%', flex: '1 1 auto' }}
+                        max={200}
+                        value={scoreRange}
+                        onChange={updateScore}
+                        valueLabelDisplay="auto"
+                        s
+                        aria-labelledby="range-slider"
+                      />
+                    </Tooltip>
                     <Typography style={{ width: '5ch', margin: 'auto 0.5em' }}>
                       {scoreRange[1]}
                     </Typography>
                   </div>
-
                 </Accordion>
               </Grid>
               <Grid item xs={12} sm={6}>
@@ -340,7 +340,9 @@ const score = (report_count, rating_count,length) => {
                   if (searchText !== '') {
                     shouldKeep =
                       shouldKeep &&
-                      trail.TITLE.includes(searchText.toLowerCase());
+                      trail.TITLE.toLowerCase().includes(
+                        searchText.toLowerCase()
+                      );
                   }
                   shouldKeep = shouldKeep && i < showLimit;
                   let trailScore = score(
@@ -391,17 +393,17 @@ const score = (report_count, rating_count,length) => {
                         {trail.TITLE}
                       </Typography>
                       <Tooltip title="How crowded a trail is (lower is better)">
-                      <Typography style={{ display: 'inline' }}>
-                        Score:{' '}
-                        {Math.round(
-                          score(
-                            trail.REPORT_COUNT,
-                            trail.RATING_COUNT,
-                            trail.DISTANCE
-                          )
-                        )}
-                      </Typography>
-                    </Tooltip>
+                        <Typography style={{ display: 'inline' }}>
+                          Score:{' '}
+                          {Math.round(
+                            score(
+                              trail.REPORT_COUNT,
+                              trail.RATING_COUNT,
+                              trail.DISTANCE
+                            )
+                          )}
+                        </Typography>
+                      </Tooltip>
                       {coords.latitude !== 0 ? (
                         <Typography>
                           Distance:{' '}
