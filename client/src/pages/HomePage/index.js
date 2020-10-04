@@ -11,7 +11,7 @@ import {
   // InputLabel,
   TextField,
   Card,
-  // Slider,
+  Slider,
   Grid,
 } from '@material-ui/core';
 // import SearchBar from 'material-ui-search-bar';
@@ -20,10 +20,12 @@ import Data from '../../utils/data';
 import Papa from 'papaparse';
 import OrderDialog from '../../components/OrderDialog';
 
-const styles = () => {
+const styles = (theme) => {
   return {
     page: {
       textAlign: 'center',
+      [theme.breakpoints.down('lg')]: {flexDirection:'column'},
+      [theme.breakpoints.up('lg')]: {flexDirection:'row'}
     },
   };
 };
@@ -52,6 +54,10 @@ function distance(lat1, lon1, lat2, lon2) {
 const HomePage = ({ classes }) => {
   const [coords, setCoords] = useState({ latitude: 0, longitude: 0 });
   const [showLimit, setShowLimit] = useState(100);
+  const [distanceRange, setDistanceRange] = useState([0,100]);
+  const [gainRange, setGainRange] = useState([0,100]);
+  const [altitudeRange, setAltitudeRange] = useState([0,10000]);
+  const [reportRange, setReportRange] = useState([0,10000]);
   const getLocation = () => {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(locationSuccess);
@@ -60,8 +66,33 @@ const HomePage = ({ classes }) => {
 
   const locationSuccess = (position) => {
     setCoords(position.coords);
-    console.log(coords);
+    //console.log(coords);
   };
+
+
+  const updateDistance = (event,newValue) =>
+  {
+    setDistanceRange(newValue);
+    //console.log(newValue);
+  }
+
+  const updateGain = (event,newValue) =>
+  {
+    setGainRange(newValue);
+    //console.log(newValue);
+  }
+
+  const updateAltitude = (event,newValue) =>
+  {
+    setAltitudeRange(newValue);
+    //console.log(newValue);
+  }
+
+  const updateReport = (event,newValue) =>
+  {
+    setReportRange(newValue);
+    //console.log(newValue);
+  }
 
   // Trail:  {DISTANCE, DIST_TYPE, GAIN, HIGHEST, LATITUDE, LONGITUDE, RATING, RATING_COUNT, REGION, REPORT_COUNT, REPORT_DATE, TITLE, URL}
   let [trails, setTrails] = useState([]);
@@ -99,13 +130,40 @@ const HomePage = ({ classes }) => {
     setTrails(arr);
   }, []);
   console.log(trails[0]);
+
+
   return (
-    <div className={classes.page}>
-      <div className="filters">
-        <Typography>Distance</Typography>
+    <div className={classes.page} style={{"display":"flex"}}>
+      <div className="filters" style={{"width":"15vw"}}>
+        <Typography id="range-slider" gutterBottom>Distance</Typography>
+          <Slider
+            value={distanceRange}
+            onChange={updateDistance}
+            valueLabelDisplay="auto"
+            aria-labelledby="range-slider"
+            />
+
         <Typography>Gain</Typography>
+          <Slider
+            value={gainRange}
+            onChange={updateGain}
+            valueLabelDisplay="auto"
+            aria-labelledby="range-slider"
+            />
         <Typography>Highest Altitude</Typography>
+          <Slider
+            value={altitudeRange}
+            onChange={updateAltitude}
+            valueLabelDisplay="auto"
+            aria-labelledby="range-slider"
+            />
         <Typography>Report Count</Typography>
+          <Slider
+            value={reportRange}
+            onChange={updateReport}
+            valueLabelDisplay="auto"
+            aria-labelledby="range-slider"
+            />
       </div>
       <div className="main">
         <form style={{ maxWidth: '40vw', margin: 'auto' }}>
