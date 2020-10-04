@@ -26,12 +26,15 @@ const styles = (theme) => {
       textAlign: 'center',
     },
     bodyContainer:{
+      display: 'flex',
+      padding: '1em',
       [theme.breakpoints.down('lg')]: {flexDirection:'column'},
       [theme.breakpoints.up('lg')]: {flexDirection:'row'}
     },
     filters:{
-      margin: 'auto',
-      [theme.breakpoints.down('lg')]: {width:'90%'},
+      margin: '0 auto',
+      padding: '1em',
+      [theme.breakpoints.down('lg')]: {width:'50vw'},
       [theme.breakpoints.up('lg')]: {width:'15vw'}
     },
   };
