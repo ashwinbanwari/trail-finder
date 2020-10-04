@@ -2,9 +2,9 @@ import React, {Component} from 'react';
 import { Map, Marker, GoogleApiWrapper } from 'google-maps-react';
 
 class GoogleMap extends Component {
-    constructor(props) {
+    /*constructor(props) {
         super(props);
-    }
+    }*/
 
     render() {
         const style = {
