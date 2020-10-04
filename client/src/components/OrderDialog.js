@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
@@ -12,6 +12,29 @@ import { useTheme } from '@material-ui/core/styles';
 export default (props) => {
   const theme = useTheme();
   const fullScreen = useMediaQuery(theme.breakpoints.down('sm'));
+
+  const [currLat, setCurrLat] = useState(null);
+  const [currLon, setCurrLon] = useState(null);
+  const [weather, setWeather] = useState(null);
+
+  // Lat/Lon from props
+  const lat = props.trail?.LATITUDE;
+  const lon = props.trail?.LONGITUDE;
+
+  // If different, then update and get the new weather
+  if (lat != currLat || lon != currLon) {
+    setCurrLat(lat);
+    setCurrLon(lon);
+    fetch(
+      `https://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${lon}&appid=08c66f5d1ce3a740e37c2722407df6e6&units=imperial&exclude=current,minutely,hourly,alerts`
+    )
+      .then((res) => {
+        res.json().then((data) => {
+          setWeather(data);
+        });
+      })
+      .catch((err) => alert(err));
+  }
 
   return (
     <div>
@@ -30,6 +53,26 @@ export default (props) => {
               padding: '2em',
             }}
           >
+            {weather ? (
+              <div style={{ marginBottom: '2em' }}>
+                <Typography gutterBottom variant="h5">
+                  Weather Forecast
+                </Typography>
+                {weather.daily
+                  .filter((_, i) => i < 5)
+                  .map((day) => (
+                    <Typography>
+                      <b>
+                        {new Date(day.dt * 1000).toLocaleDateString('en-US')}:
+                      </b>{' '}
+                      {day.weather[0].main} ({day.temp.day}
+                      °)
+                    </Typography>
+                  ))}
+              </div>
+            ) : (
+              ''
+            )}
             {props.trail?.DISTANCE ? (
               <Typography>
                 Distance: {props.trail?.DISTANCE}
@@ -81,7 +124,13 @@ export default (props) => {
           </div>
         </DialogContent>
         <DialogActions>
-          <Button onClick={props.handleClose} autoFocus>
+          <Button
+            onClick={() => {
+              setWeather(null);
+              props.handleClose();
+            }}
+            autoFocus
+          >
             Close
           </Button>
         </DialogActions>
