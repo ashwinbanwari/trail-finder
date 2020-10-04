@@ -65,10 +65,10 @@ const HomePage = ({ classes }) => {
   const [coords, setCoords] = useState({ latitude: 0, longitude: 0 });
   const [searchText, setSearchText] = useState('');
   const [showLimit, setShowLimit] = useState(100);
-  const [distanceRange, setDistanceRange] = useState([0,100]);
-  const [gainRange, setGainRange] = useState([0,100]);
-  const [altitudeRange, setAltitudeRange] = useState([0,10000]);
-  const [reportRange, setReportRange] = useState([0,10000]);
+  const [distanceRange, setDistanceRange] = useState([0,1300]);
+  const [gainRange, setGainRange] = useState([0,28000]);
+  const [altitudeRange, setAltitudeRange] = useState([0,13000]);
+  const [reportRange, setReportRange] = useState([0,2000]);
   const getLocation = () => {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(locationSuccess);
@@ -156,6 +156,7 @@ const HomePage = ({ classes }) => {
       <div className={classes.filters}>
         <Typography id="range-slider" gutterBottom>Distance</Typography>
           <Slider
+            max={1300}
             value={distanceRange}
             onChange={updateDistance}
             valueLabelDisplay="auto"
@@ -164,6 +165,7 @@ const HomePage = ({ classes }) => {
 
         <Typography>Gain</Typography>
           <Slider
+            max={28000}
             value={gainRange}
             onChange={updateGain}
             valueLabelDisplay="auto"
@@ -173,11 +175,13 @@ const HomePage = ({ classes }) => {
           <Slider
             value={altitudeRange}
             onChange={updateAltitude}
+            max={13000}
             valueLabelDisplay="auto"
             aria-labelledby="range-slider"
             />
         <Typography>Report Count</Typography>
           <Slider
+            max={2000}
             value={reportRange}
             onChange={updateReport}
             valueLabelDisplay="auto"
@@ -233,6 +237,11 @@ const HomePage = ({ classes }) => {
                     trail.TITLE.includes(searchText.toLowerCase());
                 }
                 shouldKeep = shouldKeep && i < showLimit;
+                /* Silder Filters*/
+                shouldKeep = shouldKeep && (trail.DISTANCE >= distanceRange[0] && trail.DISTANCE <= distanceRange[1]);
+                shouldKeep = shouldKeep && (trail.GAIN >= gainRange[0] && trail.GAIN <= gainRange[1]);
+                shouldKeep = shouldKeep && (trail.HIGHEST >= altitudeRange[0] && trail.HIGHEST <= altitudeRange[1]);
+                shouldKeep = shouldKeep && (trail.REPORT_COUNT >= reportRange[0] && trail.REPORT_COUNT <= reportRange[1]);
                 return shouldKeep;
               })
               .map((trail) => (
@@ -247,7 +256,7 @@ const HomePage = ({ classes }) => {
                       width: '40ch',
                     }}
                   >
-                    <Typography key={trail.TITLE} style={{ display: 'inline' }}>
+                    <Typography style={{ display: 'inline' }}>
                       {trail.TITLE}
                     </Typography>
                     {coords.latitude !== 0 ? (
