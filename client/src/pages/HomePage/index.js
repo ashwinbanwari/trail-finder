@@ -8,7 +8,8 @@ import {
 } from '@material-ui/core';
 // import SearchBar from 'material-ui-search-bar';
 import { withRouter } from 'react-router-dom';
-import firebase from 'firebase';
+import Data from '../../utils/data';
+import Papa from 'papaparse';
 
 const styles = () => {
   return {
@@ -23,29 +24,44 @@ const HomePage = ({ classes }) => {
   let [trails, setTrails] = useState([]);
 
   useEffect(() => {
-    const fetchData = async () => {
-      const querySnapshot = await firebase
-        .firestore()
-        .collection('trails')
-        .where('REPORT_COUNT', '<', 1000)
-        .orderBy("REPORT_COUNT", "asc")
-        .limit(40)
-        .get();
-      let trails = [];
-      querySnapshot.docs.forEach((doc) => {
-        trails.push(doc.data());
-      });
-      setTrails(trails);
-    };
-    fetchData();
+    const trails = Data.trails;
+    const data = Papa.parse(trails).data;
+    let arr = [];
+    // Parse CSV data
+    for (var i = 1; i < data.length; i++) {
+      var curr = {};
+      for (var j = 0; j < data[0].length; j++) {
+        if (
+          typeof data[i][j] !== 'undefined' &&
+          data[i][j] &&
+          data[i][j] !== ''
+        ) {
+          if (
+            data[0][j] === 'DIST_TYPE' ||
+            data[0][j] === 'REGION' ||
+            data[0][j] === 'REPORT_DATE' ||
+            data[0][j] === 'TITLE' ||
+            data[0][j] === 'URL'
+          ) {
+            curr[data[0][j]] = data[i][j].trim();
+          } else {
+            curr[data[0][j]] = parseInt(data[i][j]);
+          }
+        }
+      }
+      arr.push(curr);
+    }
+    setTrails(arr);
   }, []);
 
   return (
     <div className={classes.page}>
       <CssBaseline />
-      {trails.map((trail) => 
-        <Typography>{trail.TITLE}, {trail.RATING_COUNT + trail.REPORT_COUNT}</Typography>
-      )}
+      {trails
+        .filter((_, i) => i < 100)
+        .map((trail) => (
+          <Typography>{trail.TITLE}</Typography>
+        ))}
     </div>
   );
 };
