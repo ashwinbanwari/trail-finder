@@ -156,12 +156,14 @@ const HomePage = ({ classes }) => {
         {/*<GoogleMap/>*/}
         <Typography variant="h2">Trailess</Typography>
         <Typography variant="h5">
-          <i>Find less-used trails</i>
+          <i>Find the trail less traveled by</i>
         </Typography>
       </div>
       <div className={classes.bodyContainer}>
         <div className="main" style={{ margin: 'auto' }}>
-          <div style={{maxWidth: 1250, marginLeft: 'auto', marginRight: 'auto'}}>
+          <div
+            style={{ maxWidth: 1250, marginLeft: 'auto', marginRight: 'auto' }}
+          >
             <SearchBar
               placeholder="Search By Trail Name"
               value={searchText}
@@ -271,11 +273,11 @@ const HomePage = ({ classes }) => {
                 </Accordion>
               </Grid>
               <Grid item xs={12} sm={6}>
-                <FormGroup style={{ marginTop: '1em'}}>
+                <FormGroup style={{ marginTop: '1em' }}>
                   <FormControl>
                     <Button
                       variant="contained"
-                      style={{height: 47, color: 'white'}}
+                      style={{ height: 47, color: 'white' }}
                       color="primary"
                       onClick={getLocation}
                     >
