@@ -2,20 +2,23 @@ import React, {Component} from 'react';
 import { Map, Marker, GoogleApiWrapper } from 'google-maps-react';
 
 class GoogleMap extends Component {
-    
+    constructor(props) {
+        super(props);
+    }
+
     render() {
         const style = {
-            width: '300px',
-            height: '300px'
+            width: '80%',
+            height: '70%'
         }
         return( 
-            <div id = "google-map">
+            <div id = "google-map" style = {style}>
                 <Map
                 google={this.props.google}
                 zoom={10}
                 initialCenter={{
-                lat: 35.5496939,
-                lng: -120.7060049
+                lat: this.props.lat,
+                lng: this.props.lng
                 }}
                 style={style}
                 >

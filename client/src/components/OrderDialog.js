@@ -7,6 +7,7 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 import { useTheme } from '@material-ui/core/styles';
+import GoogleMap from './Map';
 
 // props: trail: {DISTANCE, DIST_TYPE, GAIN, HIGHEST, LATITUDE, LONGITUDE, RATING, RATING_COUNT, REGION, REPORT_COUNT, REPORT_DATE, TITLE, URL}
 export default (props) => {
@@ -116,7 +117,9 @@ export default (props) => {
             ) : (
               <div />
             )}
+            <GoogleMap lat={lat} lng={lon}/>
           </div>
+          
         </DialogContent>
         <DialogActions>
           {props.trail?.URL ? (
