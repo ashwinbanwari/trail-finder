@@ -9,19 +9,17 @@ The first step is to visit [trailess.space](trailess.space)! There, you will be 
 Note: Our data set was pulled from the Washington Trails Association so if you're viewing our project from outside Washington state, the distance might look funky.
 
 ## How we built it
-To train our sentiment analysis model, we used the AutoML platform on Google Cloud. We also developed a more advanced model that used Twitter-specific feature extraction from a Weka package called AffectiveTweets and then passed those vectors into a neural network regression pipeline on Microsoft Azure's Machine Learning Designer. Unfortunately, we weren't able to fully connect this model to our project in time.
+We built this web app using ReactJS framework, and MaterialUI for UI. We pulled our dataset from Washington Trails Association using a Python script and are using Google Maps to visualize location and Radar.io to determine distance and time from the user.
 
-We used React.js to create the website, Express.js to manage our API, the Google Cloud Node.js library to connect with the model, and the Twit Node.js library to communicate with the Twitter API. We then hosted our own API on Heroku and deployed the website on Netlify.
 
 ## Challenges we ran into
-Being students at the University of Washington, our school started this past week so we were unable to get started until Saturday afternoon which compressed our development time.
-We had a lot of difficulty connecting the model we trained on Azure due to the [AffectiveTweets](https://affectivetweets.cms.waikato.ac.nz/) Weka package, which was created specifically for the sentiment analysis of Tweets. We would have had to create and deploy a separate REST API in Java in order to add [Weka](https://www.cs.waikato.ac.nz/ml/weka/), an open-source machine learning tool, to our workflow.
+Being students at the University of Washington, our school started this past week so we were unable to get started until Saturday afternoon which compressed our development time. We also had difficulties getting Google Maps to cooperate as it sometimes refused to show up and at other times would show the wrong data.
 
 ## What we learned
-We learned many new technologies and are extremely happy that we were able to connect all the pieces of the puzzle into a working project! Through reading some of the existing literature ([1](https://web.cs.wpi.edu/~emmanuel/publications/PDFs/C30.pdf), [2](https://ieeexplore.ieee.org/document/8281813), [3](https://arxiv.org/ftp/arxiv/papers/1601/1601.06971.pdf)) related to our project, we were also fascinated by the complicated, living microcosm of society that Twitter encompasses within the 500 million tweets that are sent each day from every corner of the world.
+We learned many new technologies and are extremely happy that we were able to connect all the pieces of the puzzle into a working project! Through our data sifting, we were able to learn how to parse CSV files and visually represent it in a way that was palatable by all.
 
 ## What's next for Trailess
 Here is a list of potential ideas that could expand Trailess: 
-* Create a reccomended trails page based on prior trails that the users have visited
+* Create a recommended trails page based on prior trails that the users have visited
 * Create a see similar page on the bottom of each card so that trail-goers can view similar hikes to the one they're currently viewing
 * Display trends of popularity based on when reviews of the trail are published
