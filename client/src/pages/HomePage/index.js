@@ -69,7 +69,7 @@ const HomePage = ({ classes }) => {
   const [coords, setCoords] = useState({ latitude: 0, longitude: 0 });
   const [searchText, setSearchText] = useState('');
   const [showLimit, setShowLimit] = useState(100);
-  const [distanceRange, setDistanceRange] = useState([0,1300]);
+  const [lengthRange, setLengthRange] = useState([0,1300]);
   const [gainRange, setGainRange] = useState([0,28000]);
   const [altitudeRange, setAltitudeRange] = useState([0,13000]);
   const [reportRange, setReportRange] = useState([0,2000]);
@@ -86,9 +86,9 @@ const HomePage = ({ classes }) => {
   };
 
 
-  const updateDistance = (event,newValue) =>
+  const updateLength = (event,newValue) =>
   {
-    setDistanceRange(newValue);
+    setLengthRange(newValue);
     //console.log(newValue);
   }
 
@@ -150,12 +150,13 @@ const HomePage = ({ classes }) => {
       arr.push(curr);
     }
     setTrails(arr);
+    console.log("API REQUEST")
   }, []);
-  console.log(trails[0]);
 
 
-const score = (report_count, rating_count,distance) => {
-  return ((report_count + rating_count - 25) / (1)) / (distance + 0.0001);
+
+const score = (report_count, rating_count,length) => {
+  return ((report_count + rating_count - 25) / (1)) / (length + 0.0001);
 }
 
 
@@ -178,18 +179,18 @@ const score = (report_count, rating_count,distance) => {
           >
             <Typography className={classes.heading}>Filters</Typography>
           </AccordionSummary>
-        <Typography id="range-slider" gutterBottom>Distance</Typography>
+        <Typography id="range-slider" gutterBottom>Length</Typography>
           <div style={{"display":"flex"}}>
-          <Typography style={{"width":"5ch","margin":"0 0.5em"}}>{distanceRange[0]}</Typography>
+          <Typography style={{"width":"5ch","margin":"0 0.5em"}}>{lengthRange[0]}</Typography>
           <Slider
             style={{"width": "70%",'flex':'1 1 auto'}}
             max={1300}
-            value={distanceRange}
-            onChange={updateDistance}
+            value={lengthRange}
+            onChange={updateLength}
             valueLabelDisplay="auto"
             aria-labelledby="range-slider"
             />
-          <Typography style={{"width":"5ch","margin":"0 0.5em"}}>{distanceRange[1]}</Typography>
+          <Typography style={{"width":"5ch","margin":"0 0.5em"}}>{lengthRange[1]}</Typography>
 </div>
         <Typography>Gain</Typography>
         <div style={{"display":"flex"}}>
@@ -295,12 +296,15 @@ const score = (report_count, rating_count,distance) => {
                     trail.TITLE.includes(searchText.toLowerCase());
                 }
                 shouldKeep = shouldKeep && i < showLimit;
+                let trailScore = score(trail.REPORT_COUNT,trail.RATING_COUNT, trail.DISTANCE);
+                if(!shouldKeep || trailScore > 2000)
+                {return false;}
                 /* Silder Filters*/
-                shouldKeep = shouldKeep && (trail.DISTANCE >= distanceRange[0] && trail.DISTANCE <= distanceRange[1]);
+                shouldKeep = shouldKeep && (trail.DISTANCE >= lengthRange[0] && trail.DISTANCE <= lengthRange[1]);
                 shouldKeep = shouldKeep && (trail.GAIN >= gainRange[0] && trail.GAIN <= gainRange[1]);
                 shouldKeep = shouldKeep && (trail.HIGHEST >= altitudeRange[0] && trail.HIGHEST <= altitudeRange[1]);
-                shouldKeep = shouldKeep && (trail.REPORT_COUNT >= reportRange[0] && trail.REPORT_COUNT <= reportRange[1]);
-                let trailScore = score(trail.REPORT_COUNT,trail.RATING_COUNT, trail.DISTANCE);
+                shouldKeep = shouldKeep && (trail.REPORT_COUNT + trail.RATING_COUNT >= reportRange[0] && trail.REPORT_COUNT + trail.RATING_COUNT  <= reportRange[1]);
+
                 shouldKeep = shouldKeep && (trailScore >= scoreRange[0] && trailScore <= scoreRange[1]);
                 return shouldKeep;
               })
