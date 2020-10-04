@@ -24,3 +24,8 @@ yarn-debug.log*
 yarn-error.log*
 .firebase/hosting.YnVpbGQ.cache
 .firebase/hosting.cHVibGlj.cache
+client/.firebaserc
+client/build/404.html
+client/build/favicon.ico
+client/build/manifest.json
+client/firebase.json

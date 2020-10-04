@@ -2,9 +2,6 @@ import React, {Component} from 'react';
 import { Map, Marker, GoogleApiWrapper, Circle } from 'google-maps-react';
 
 class GoogleMap extends Component {
-    constructor(props) {
-        super(props);
-    }
     min = (a, b) => {
         if (a < b) {
             return a;
@@ -40,6 +37,8 @@ class GoogleMap extends Component {
         const styleBigMap = {
             width: '50%',
             height: '50%',
+            maxWidth: 1100,
+            maxHeight: 450,
         }
         if (this.props.lat != null) {
             return( 
