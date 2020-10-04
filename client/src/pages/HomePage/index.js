@@ -146,9 +146,12 @@ const HomePage = ({ classes }) => {
     console.log('API REQUEST');
   }, []);
 
-  const score = (report_count, rating_count, length) => {
-    return (report_count + rating_count - 25) / 1 / (length + 0.0001);
-  };
+
+
+const score = (report_count, rating_count,length) => {
+  return (Math.abs(report_count + rating_count - 25) / (1)) / (length + 0.0001);
+}
+
 
   return (
     <div className={classes.page}>
@@ -195,7 +198,7 @@ const HomePage = ({ classes }) => {
                     Length
                   </Typography>
                   <div style={{ display: 'flex' }}>
-                    <Typography style={{ width: '5ch', margin: '0 0.5em' }}>
+                    <Typography style={{ width: '5ch', margin: 'auto 0.5em' }}>
                       {lengthRange[0]}
                     </Typography>
                     <Slider
@@ -206,13 +209,13 @@ const HomePage = ({ classes }) => {
                       valueLabelDisplay="auto"
                       aria-labelledby="range-slider"
                     />
-                    <Typography style={{ width: '5ch', margin: '0 0.5em' }}>
+                    <Typography style={{ width: '5ch', margin: 'auto 0.5em' }}>
                       {lengthRange[1]}
                     </Typography>
                   </div>
                   <Typography>Gain</Typography>
                   <div style={{ display: 'flex' }}>
-                    <Typography style={{ width: '5ch', margin: '0 0.5em' }}>
+                    <Typography style={{ width: '5ch', margin: 'auto 0.5em' }}>
                       {gainRange[0]}
                     </Typography>
                     <Slider
@@ -223,14 +226,14 @@ const HomePage = ({ classes }) => {
                       valueLabelDisplay="auto"
                       aria-labelledby="range-slider"
                     />
-                    <Typography style={{ width: '5ch', margin: '0 0.5em' }}>
+                    <Typography style={{ width: '5ch', margin: 'auto 0.5em' }}>
                       {gainRange[1]}
                     </Typography>
                   </div>
 
                   <Typography>Highest Altitude</Typography>
                   <div style={{ display: 'flex' }}>
-                    <Typography style={{ width: '5ch', margin: '0 0.5em' }}>
+                    <Typography style={{ width: '5ch', margin: 'auto 0.5em' }}>
                       {altitudeRange[0]}
                     </Typography>
                     <Slider
@@ -241,13 +244,13 @@ const HomePage = ({ classes }) => {
                       valueLabelDisplay="auto"
                       aria-labelledby="range-slider"
                     />
-                    <Typography style={{ width: '5ch', margin: '0 0.5em' }}>
+                    <Typography style={{ width: '5ch', margin: 'auto 0.5em' }}>
                       {altitudeRange[1]}
                     </Typography>
                   </div>
                   <Typography>Report Count</Typography>
                   <div style={{ display: 'flex' }}>
-                    <Typography style={{ width: '5ch', margin: '0 0.5em' }}>
+                    <Typography style={{ width: '5ch', margin: 'auto 0.5em' }}>
                       {reportRange[0]}
                     </Typography>
                     <Slider
@@ -258,7 +261,7 @@ const HomePage = ({ classes }) => {
                       valueLabelDisplay="auto"
                       aria-labelledby="range-slider"
                     />
-                    <Typography style={{ width: '5ch', margin: '0 0.5em' }}>
+                    <Typography style={{ width: '5ch', margin: 'auto 0.5em' }}>
                       {reportRange[1]}
                     </Typography>
                   </div>
@@ -266,7 +269,7 @@ const HomePage = ({ classes }) => {
                     Rating
                   </Typography>
                   <div style={{ display: 'flex' }}>
-                    <Typography style={{ width: '5ch', margin: '0 0.5em' }}>
+                    <Typography style={{ width: '5ch', margin: 'auto 0.5em' }}>
                       {scoreRange[0]}
                     </Typography>
                     <Slider
@@ -278,7 +281,7 @@ const HomePage = ({ classes }) => {
                       s
                       aria-labelledby="range-slider"
                     />
-                    <Typography style={{ width: '5ch', margin: '0 0.5em' }}>
+                    <Typography style={{ width: '5ch', margin: 'auto 0.5em' }}>
                       {scoreRange[1]}
                     </Typography>
                   </div>
