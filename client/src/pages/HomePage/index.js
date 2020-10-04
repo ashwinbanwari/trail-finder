@@ -13,6 +13,7 @@ import {
   Card,
   Slider,
   Grid,
+  Tooltip,
   Accordion,
   AccordionSummary,
 } from '@material-ui/core';
@@ -253,13 +254,17 @@ const score = (report_count, rating_count,length) => {
                       {reportRange[1]}
                     </Typography>
                   </div>
+
+
                   <Typography id="range-slider" gutterBottom>
-                    Rating
+                    Score
                   </Typography>
+
                   <div style={{ display: 'flex' }}>
                     <Typography style={{ width: '5ch', margin: 'auto 0.5em' }}>
                       {scoreRange[0]}
                     </Typography>
+                    <Tooltip title="How crowded a trail is (lower is better)">
                     <Slider
                       style={{ width: '70%', flex: '1 1 auto' }}
                       max={200}
@@ -269,10 +274,12 @@ const score = (report_count, rating_count,length) => {
                       s
                       aria-labelledby="range-slider"
                     />
+                  </Tooltip>
                     <Typography style={{ width: '5ch', margin: 'auto 0.5em' }}>
                       {scoreRange[1]}
                     </Typography>
                   </div>
+
                 </Accordion>
               </Grid>
               <Grid item xs={12} sm={6}>
@@ -371,6 +378,7 @@ const score = (report_count, rating_count,length) => {
                       <Typography style={{ display: 'inline' }}>
                         {trail.TITLE}
                       </Typography>
+                      <Tooltip title="How crowded a trail is (lower is better)">
                       <Typography style={{ display: 'inline' }}>
                         Score:{' '}
                         {Math.round(
@@ -381,6 +389,7 @@ const score = (report_count, rating_count,length) => {
                           )
                         )}
                       </Typography>
+                    </Tooltip>
                       {coords.latitude !== 0 ? (
                         <Typography>
                           Distance:{' '}
