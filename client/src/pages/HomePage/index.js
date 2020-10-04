@@ -11,7 +11,7 @@ import {
   // InputLabel,
   TextField,
   Card,
-  Slider,
+  // Slider,
   Grid,
 } from '@material-ui/core';
 // import SearchBar from 'material-ui-search-bar';
@@ -29,7 +29,7 @@ const styles = () => {
 };
 
 function distance(lat1, lon1, lat2, lon2) {
-  if (lat1 == lat2 && lon1 == lon2) {
+  if (lat1 === lat2 && lon1 === lon2) {
     return 0;
   } else {
     var radlat1 = (Math.PI * lat1) / 180;
@@ -51,6 +51,7 @@ function distance(lat1, lon1, lat2, lon2) {
 
 const HomePage = ({ classes }) => {
   const [coords, setCoords] = useState({ latitude: 0, longitude: 0 });
+  const [showLimit, setShowLimit] = useState(100);
   const getLocation = () => {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(locationSuccess);
@@ -142,7 +143,7 @@ const HomePage = ({ classes }) => {
                   ((a.LATITUDE - coords.latitude) ** 2 +
                     (b.LONGITUDE - coords.longitude) ** 2)
               )
-              .filter((_, i) => i < 100)
+              .filter((_, i) => i < showLimit)
               .map((trail) => (
                 <Grid item xs={12} sm={6} md={4}>
                   <Card
@@ -185,6 +186,23 @@ const HomePage = ({ classes }) => {
                 </Grid>
               ))}
           </Grid>
+          {showLimit < trails?.length ? (
+            <div
+              style={{
+                marginTop: '1.5em',
+                marginBottom: '2em',
+                textAlign: 'center',
+                marginLeft:'auto',
+                marginRight: 'auto'
+              }}
+            >
+              <Button onClick={() => setShowLimit(showLimit + 200)}>
+                Show More
+              </Button>
+            </div>
+          ) : (
+            <div />
+          )}
         </div>
       </div>
     </div>
