@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
@@ -15,14 +15,14 @@ export default (props) => {
 
   const [currLat, setCurrLat] = useState(null);
   const [currLon, setCurrLon] = useState(null);
-  const [weather, setWeather] = useState(null);
+  const [weather, setWeather] = useState({ daily: [] });
 
   // Lat/Lon from props
   const lat = props.trail?.LATITUDE;
   const lon = props.trail?.LONGITUDE;
 
   // If different, then update and get the new weather
-  if (lat != currLat || lon != currLon) {
+  if (lat !== currLat || lon !== currLon) {
     setCurrLat(lat);
     setCurrLon(lon);
     fetch(
@@ -58,8 +58,8 @@ export default (props) => {
                 <Typography gutterBottom variant="h5">
                   Weather Forecast
                 </Typography>
-                {weather.daily
-                  .filter((_, i) => i < 5)
+                {weather?.daily
+                  ?.filter((_, i) => i < 5)
                   .map((day) => (
                     <Typography>
                       <b>
@@ -75,7 +75,7 @@ export default (props) => {
             )}
             {props.trail?.DISTANCE ? (
               <Typography>
-                Distance: {props.trail?.DISTANCE}
+                <b>Distance:</b> {props.trail?.DISTANCE}
                 {' miles '}
                 {props.trail?.DIST_TYPE
                   ? '(' + props.trail?.DIST_TYPE + ')'
@@ -86,7 +86,7 @@ export default (props) => {
             )}
             {props.trail?.GAIN ? (
               <Typography>
-                Gain: {props.trail?.GAIN}
+                <b>Gain:</b> {props.trail?.GAIN}
                 {' feet'}
               </Typography>
             ) : (
@@ -94,7 +94,7 @@ export default (props) => {
             )}
             {props.trail?.HIGHEST ? (
               <Typography>
-                Highest Point: {props.trail?.HIGHEST}
+                <b>Highest Point:</b> {props.trail?.HIGHEST}
                 {' feet'}
               </Typography>
             ) : (
@@ -102,7 +102,7 @@ export default (props) => {
             )}
             {props.trail?.RATING ? (
               <Typography>
-                Rating: {props.trail?.RATING}
+                <b>Rating:</b> {props.trail?.RATING}
                 {'/5 from '}
                 {props.trail?.RATING_COUNT} Reviews
               </Typography>
@@ -110,13 +110,8 @@ export default (props) => {
               <div />
             )}
             {props.trail?.REGION ? (
-              <Typography>Region: {props.trail?.REGION}</Typography>
-            ) : (
-              <div />
-            )}
-            {props.trail?.URL ? (
               <Typography>
-                Learn More: <a href={props.trail?.URL}>{props.trail?.URL}</a>
+                <b>Region:</b> {props.trail?.REGION}
               </Typography>
             ) : (
               <div />
@@ -124,6 +119,13 @@ export default (props) => {
           </div>
         </DialogContent>
         <DialogActions>
+          {props.trail?.URL ? (
+            <Button onClick={() => (window.location.href = props.trail?.URL)}>
+              View Details
+            </Button>
+          ) : (
+            <div />
+          )}
           <Button
             onClick={() => {
               setWeather(null);
